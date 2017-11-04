@@ -3,6 +3,7 @@ using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using Coinche.Protobuf;
 
 namespace Coinche.Server
 {
@@ -52,20 +53,23 @@ namespace Coinche.Server
          */
         private void Run()
         {
-            var bytesFrom = new byte[1024];
-
             while (true)
             {
                 try
                 {
-                    this._stream.Read(bytesFrom, 0, 1024);
-
-                    var dataFromClient = Encoding.ASCII.GetString(bytesFrom);
-
-                    Console.Out.WriteLineAsync("Client " + this.Id + " : " + dataFromClient);
-
-                    Server.Singleton.Broadcast(dataFromClient, true, this);
-                    Array.Clear(bytesFrom, 0, bytesFrom.Length);
+                    var header = new byte[2];
+                    if (this._stream.Read(header, 0, 2) != 2) continue;
+                    var type = (Wrapper.Type) BitConverter.ToInt16(header, 0);
+                    switch (type)
+                    {
+                        case Wrapper.Type.Message:
+                            var message = ProtoBuf.Serializer.DeserializeWithLengthPrefix<Message>(this._stream, ProtoBuf.PrefixStyle.Fixed32);
+                            Console.Out.WriteLineAsync("Received message from client " + Id + " : " + message.Text);
+                            break;
+                        default:
+                            Console.Out.WriteLineAsync("Received invalid data from client " + Id);
+                            break;
+                    }
                 }
                 catch (IOException e)
                 {
