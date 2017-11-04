@@ -34,26 +34,26 @@ namespace Coinche.Client
         /**
          * Socket
          */
-        private readonly TcpClient _socket = new TcpClient();
-        private NetworkStream _stream = default(NetworkStream);
+        public TcpClient Socket { get; private set; } = new TcpClient();
+        private NetworkStream Stream { get; set; } = default(NetworkStream);
         
         /**
          * Threads
          */
-        private Thread _readThread;
-        private Thread _writeThread;
+        private Thread ReadThread { get; set; }
+        private Thread WriteThread { get; set; }
 
         /**
          * Serve to known if the client has been properly initialized
          */
-        public bool IsInitialized { get; private set; }
+        private bool IsInitialized { get; set; }
 
         /**
          * Default constructor
          */
         private Client()
         {
-            this.Initialize(DefaultServerIp, DefaultServerPort);
+            Initialize(DefaultServerIp, DefaultServerPort);
         }
 
         /**
@@ -61,41 +61,39 @@ namespace Coinche.Client
          */
         private Client(string ip, int port)
         {
-            this.Initialize(ip, port);
+            Initialize(ip, port);
         }
 
         /**
          * Initialize method which will create the socket
          */
-        public bool Initialize(string ip, int port)
+        private void Initialize(string ip, int port)
         {
-            this.IsInitialized = false;
+            IsInitialized = false;
             try
             {
-                this._socket.Connect(ip, port);
-                this._stream = this._socket.GetStream();
-                this.IsInitialized = true;
-                return true;
+                Socket.Connect(ip, port);
+                Stream = Socket.GetStream();
+                IsInitialized = true;
             }
             catch (Exception e)
             {
                 Console.Out.WriteLineAsync(e.ToString());
-                return false;
             }
         }
 
         /**
          * Run two different threads, one for read and the second for write
          */
-        public bool Run()
+        private bool Run()
         {
             try
             {
-                this._readThread = new Thread(this.ThreadedReadRun);
-                this._writeThread = new Thread(this.ThreadedWriteRun);
+                ReadThread = new Thread(ThreadedReadRun);
+                WriteThread = new Thread(ThreadedWriteRun);
 
-                this._readThread.Start();
-                this._writeThread.Start();
+                ReadThread.Start();
+                WriteThread.Start();
                 
                 return true;
             }
@@ -111,16 +109,16 @@ namespace Coinche.Client
          */
         private void ThreadedReadRun()
         {
-            while (this.IsAlive())
+            while (IsAlive())
             {
                 try
                 {
                     var bytesFrom = new byte[1024];
-                    this._stream.Read(bytesFrom, 0, 1024);
+                    Stream.Read(bytesFrom, 0, 1024);
                     var dataFromServer = Encoding.ASCII.GetString(bytesFrom);
                     Console.Out.WriteLineAsync(dataFromServer);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     return;
                 }
@@ -132,17 +130,15 @@ namespace Coinche.Client
          */
         private void ThreadedWriteRun()
         {
-            while (this.IsAlive())
+            while (IsAlive())
             {
                 try
                 {
                     var message = new Message(Console.In.ReadLine());
-                    this._stream.Write(message.ProtobufTypeAsBytes, 0, 2);
-                    ProtoBuf.Serializer.SerializeWithLengthPrefix<Message>(this._stream,
-                        (Message) message,
-                        ProtoBuf.PrefixStyle.Fixed32);
+                    Stream.Write(message.ProtobufTypeAsBytes, 0, 2);
+                    ProtoBuf.Serializer.SerializeWithLengthPrefix(Stream, message, ProtoBuf.PrefixStyle.Fixed32);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     return;
                 }
@@ -152,23 +148,23 @@ namespace Coinche.Client
         /**
          * Serve to know of threads and socket are still alive
          */
-        public bool IsAlive()
+        private bool IsAlive()
         {
-            return this._readThread.IsAlive && this._writeThread.IsAlive && this._socket.Connected;
+            return ReadThread.IsAlive && WriteThread.IsAlive && Socket.Connected;
         }
 
         /**
          * Clear socket and threads
          */
-        public void Clear()
+        private void Clear()
         {
-            if (this._readThread.IsAlive)
-                this._readThread.Abort();
+            if (ReadThread.IsAlive)
+                ReadThread.Abort();
             
-            if (this._writeThread.IsAlive)
-                this._writeThread.Abort();
+            if (WriteThread.IsAlive)
+                WriteThread.Abort();
             
-            this._socket.Close();
+            Socket.Close();
         }
         
     }

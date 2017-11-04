@@ -11,9 +11,9 @@ namespace Coinche.Server
     {
         public static void Main(string[] args)
         {
-            if (!Server.Singleton.Initialize()) return;
-            Server.Singleton.Run();
-            Server.Singleton.Clear();
+            if (!Singleton.Initialize()) return;
+            Singleton.Run();
+            Singleton.Clear();
         }
 
         private const int DefaultServerPort = 8888;
@@ -26,7 +26,7 @@ namespace Coinche.Server
         /**
          * Socket Listener
          */
-        private TcpListener _listener;
+        private TcpListener Listener { get; set; }
 
         /**
          * List of connected clients
@@ -36,28 +36,26 @@ namespace Coinche.Server
         /**
          * Temporary list for clients to be removed
          */
-        private readonly List<Client> _pendingDisconnection = new List<Client>();
+        private List<Client> PendingDisconnection { get; } = new List<Client>();
         
         /**
          * Status attributes
          */
-        public bool IsInitialized { get; private set; }
-        public bool IsRunning { get; private set; }
+        private bool IsInitialized { get; set; }
 
         /**
          * Initiliaze listener
          */
         private bool Initialize(int port = DefaultServerPort)
         {
-            this.IsInitialized = false;
-            this.IsRunning = false;
+            IsInitialized = false;
             try
             {
-                this._listener = new TcpListener(IPAddress.Any, port);
-                this.ClientList = new Hashtable();
+                Listener = new TcpListener(IPAddress.Any, port);
+                ClientList = new Hashtable();
 
-                this._listener.Start();
-                this.IsInitialized = true;
+                Listener.Start();
+                IsInitialized = true;
                 return true;
             }
             catch (Exception e)
@@ -72,25 +70,23 @@ namespace Coinche.Server
          */
         private void Run()
         {
-            if (!this.IsInitialized)
+            if (!IsInitialized)
                 return;
-
-            this.IsRunning = true;
 
             var nb = 0;
             while (true)
             {
-                var clientSocket = this._listener.AcceptTcpClient();
+                var clientSocket = Listener.AcceptTcpClient();
                 ++nb;
 
                 Console.Out.WriteLineAsync("Client " + nb + " joined the server.");
 
                 var client = new Client(clientSocket, nb);
                 client.Initialize();
-                this.ClientList.Add(nb, client);
+                ClientList.Add(nb, client);
                 
                 // Check disconnection after all new clients
-                this.CheckDisconnection();
+                CheckDisconnection();
             }
         }
 
@@ -99,11 +95,11 @@ namespace Coinche.Server
          */
         private void CheckDisconnection()
         {
-            foreach (var client in this._pendingDisconnection)
+            foreach (var client in PendingDisconnection)
             {
                 client.Clear();
                 Console.Out.WriteLineAsync("Client " + client.Id + " has disconnected.");
-                this.ClientList.Remove(client.Id);
+                ClientList.Remove(client.Id);
             }
         }
 
@@ -112,17 +108,16 @@ namespace Coinche.Server
          */
         private void Clear()
         {
-            this._pendingDisconnection.Clear();
-            foreach (DictionaryEntry item in this.ClientList)
+            PendingDisconnection.Clear();
+            foreach (DictionaryEntry item in ClientList)
             {
                 var client = (Client) item.Value;
                 client.Clear();
                 Console.Out.WriteLineAsync("Client " + client.Id + " has disconnected.");
             }
-            this.ClientList.Clear();
-            this._listener.Stop();
-            this.IsInitialized = false;
-            this.IsRunning = false;
+            ClientList.Clear();
+            Listener.Stop();
+            IsInitialized = false;
         }
 
         /**
@@ -133,27 +128,25 @@ namespace Coinche.Server
             if (flag && client == null)
                 return; // Add some security for NullReferenceException
             
-            foreach (DictionaryEntry item in this.ClientList)
+            foreach (DictionaryEntry item in ClientList)
             {
                 var broadcastClient = (Client) item.Value;
-                if (!flag && broadcastClient == client)
+                if (broadcastClient == client)
                     continue; // Stop if it is the same socket
 
-                var broadcastStream = default(NetworkStream);
+                NetworkStream broadcastStream;
                 try
                 {
                     broadcastStream = broadcastClient.Socket.GetStream();
                 }
-                catch (InvalidOperationException e)
+                catch (InvalidOperationException)
                 {
                     // Remove client if we can't get its stream
-                    this._pendingDisconnection.Add(broadcastClient);
+                    PendingDisconnection.Add(broadcastClient);
                     continue;
                 }
-                
-                byte[] broadcastBytes = null;
 
-                broadcastBytes = (flag == true)
+                var broadcastBytes = (flag)
                     ? (Encoding.ASCII.GetBytes(client.Username + " says : " + msg))
                     : (Encoding.ASCII.GetBytes(msg));
                 
@@ -162,7 +155,7 @@ namespace Coinche.Server
             }
             
             // Check disconnection after all broadcast
-            this.CheckDisconnection();
+            CheckDisconnection();
         }
 
         /**
@@ -170,7 +163,7 @@ namespace Coinche.Server
          */
         public void RemoveClient(Client client)
         {
-            this._pendingDisconnection.Add(client);
+            PendingDisconnection.Add(client);
         }
         
     }

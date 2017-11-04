@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 using Coinche.Protobuf;
 
@@ -33,10 +32,10 @@ namespace Coinche.Server
          */
         public Client(TcpClient socket, int id)
         {
-            this.Socket = socket;
-            this._stream = this.Socket.GetStream();
-            this.Id = id;
-            this.Username = this.Id.ToString();
+            Socket = socket;
+            _stream = Socket.GetStream();
+            Id = id;
+            Username = Id.ToString();
         }
 
         /**
@@ -44,8 +43,8 @@ namespace Coinche.Server
          */
         public void Initialize()
         {
-            this._thread = new Thread(this.Run);
-            this._thread.Start();
+            _thread = new Thread(Run);
+            _thread.Start();
         }
 
         /**
@@ -58,12 +57,12 @@ namespace Coinche.Server
                 try
                 {
                     var header = new byte[2];
-                    if (this._stream.Read(header, 0, 2) != 2) continue;
+                    if (_stream.Read(header, 0, 2) != 2) continue;
                     var type = (Wrapper.Type) BitConverter.ToInt16(header, 0);
                     switch (type)
                     {
                         case Wrapper.Type.Message:
-                            var message = ProtoBuf.Serializer.DeserializeWithLengthPrefix<Message>(this._stream, ProtoBuf.PrefixStyle.Fixed32);
+                            var message = ProtoBuf.Serializer.DeserializeWithLengthPrefix<Message>(_stream, ProtoBuf.PrefixStyle.Fixed32);
                             Console.Out.WriteLineAsync("Received message from client " + Id + " : " + message.Text);
                             break;
                         default:
@@ -88,9 +87,9 @@ namespace Coinche.Server
          */
         public void Clear()
         {
-            if (this._thread.IsAlive)
-                this._thread.Abort();
-            this.Socket.Close();
+            if (_thread.IsAlive)
+                _thread.Abort();
+            Socket.Close();
         }
     }
 }
