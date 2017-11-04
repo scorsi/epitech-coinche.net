@@ -65,6 +65,7 @@ namespace Coinche.Server
                     Console.Out.WriteLineAsync("Client " + this.Id + " : " + dataFromClient);
 
                     Server.Singleton.Broadcast(dataFromClient, true, this);
+                    Array.Clear(bytesFrom, 0, bytesFrom.Length);
                 }
                 catch (IOException e)
                 {
