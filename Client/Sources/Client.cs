@@ -2,6 +2,7 @@
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using Coinche.Protobuf;
 
 namespace Coinche.Client
 {
@@ -135,9 +136,11 @@ namespace Coinche.Client
             {
                 try
                 {
-                    var outStream = Encoding.ASCII.GetBytes(Console.In.ReadLine());
-                    this._stream.Write(outStream, 0, outStream.Length);
-                    this._stream.FlushAsync();
+                    var message = new Message(Console.In.ReadLine());
+                    this._stream.Write(message.ProtobufTypeAsBytes, 0, 2);
+                    ProtoBuf.Serializer.SerializeWithLengthPrefix<Message>(this._stream,
+                        (Message) message,
+                        ProtoBuf.PrefixStyle.Fixed32);
                 }
                 catch (Exception e)
                 {
