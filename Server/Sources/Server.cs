@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using Coinche.Protobuf;
+using Coinche.Protobuf.Reader;
+using Coinche.Protobuf.Writer;
+using Coinche.Server.Protobuf.Reader;
 
 namespace Coinche.Server
 {
@@ -29,6 +33,21 @@ namespace Coinche.Server
         private TcpListener Listener { get; set; }
 
         /**
+         * RequestManager
+         */
+        private ReadManager ReadManager { get; } = new ReadManager();
+        private Hashtable ReadHandlers { get; } = new Hashtable()
+        {
+            { Wrapper.Type.Message, new Coinche.Server.Protobuf.Reader.MessageHandler() }
+        };
+        
+        private WriteManager WriteManager { get; } = new WriteManager();
+        private Hashtable WriteHandlers { get; } = new Hashtable()
+        {
+            { Wrapper.Type.Message, new Coinche.Server.Protobuf.Writer.MessageHandler() }
+        };
+        
+        /**
          * List of connected clients
          */
         public Hashtable ClientList { get; private set; }
@@ -51,6 +70,9 @@ namespace Coinche.Server
             IsInitialized = false;
             try
             {
+                ReadManager.Initialize(ReadHandlers);
+                WriteManager.Initialize(WriteHandlers);
+                
                 Listener = new TcpListener(IPAddress.Any, port);
                 ClientList = new Hashtable();
 
@@ -101,6 +123,7 @@ namespace Coinche.Server
                 Console.Out.WriteLineAsync("Client " + client.Id + " has disconnected.");
                 ClientList.Remove(client.Id);
             }
+            PendingDisconnection.Clear();
         }
 
         /**
@@ -118,6 +141,14 @@ namespace Coinche.Server
             ClientList.Clear();
             Listener.Stop();
             IsInitialized = false;
+        }
+
+        /**
+         * HandleRequest
+         */
+        public void HandleRequest(NetworkStream networkStream, int clientId)
+        {
+            ReadManager.Run(networkStream, clientId);
         }
 
         /**
@@ -146,12 +177,10 @@ namespace Coinche.Server
                     continue;
                 }
 
-                var broadcastBytes = (flag)
-                    ? (Encoding.ASCII.GetBytes(client.Username + " says : " + msg))
-                    : (Encoding.ASCII.GetBytes(msg));
-                
-                broadcastStream.Write(broadcastBytes, 0, broadcastBytes.Length);
-                broadcastStream.FlushAsync();
+                WriteManager.Run(broadcastStream, Wrapper.Type.Message, 
+                    (flag) 
+                        ? (client.Username + " says : " + msg)
+                        : (msg));
             }
             
             // Check disconnection after all broadcast

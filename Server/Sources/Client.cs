@@ -13,7 +13,7 @@ namespace Coinche.Server
          */
         public TcpClient Socket { get; }
 
-        private readonly NetworkStream _stream;
+        private NetworkStream Stream { get; }
         
         /**
          * Attribute
@@ -25,7 +25,7 @@ namespace Coinche.Server
         /**
          * Thread
          */
-        private Thread _thread;
+        private Thread Thread { get; set; }
 
         /**
          * Constructor
@@ -33,7 +33,7 @@ namespace Coinche.Server
         public Client(TcpClient socket, int id)
         {
             Socket = socket;
-            _stream = Socket.GetStream();
+            Stream = Socket.GetStream();
             Id = id;
             Username = Id.ToString();
         }
@@ -43,8 +43,8 @@ namespace Coinche.Server
          */
         public void Initialize()
         {
-            _thread = new Thread(Run);
-            _thread.Start();
+            Thread = new Thread(Run);
+            Thread.Start();
         }
 
         /**
@@ -56,19 +56,7 @@ namespace Coinche.Server
             {
                 try
                 {
-                    var header = new byte[2];
-                    if (_stream.Read(header, 0, 2) != 2) continue;
-                    var type = (Wrapper.Type) BitConverter.ToInt16(header, 0);
-                    switch (type)
-                    {
-                        case Wrapper.Type.Message:
-                            var message = ProtoBuf.Serializer.DeserializeWithLengthPrefix<Message>(_stream, ProtoBuf.PrefixStyle.Fixed32);
-                            Console.Out.WriteLineAsync("Received message from client " + Id + " : " + message.Text);
-                            break;
-                        default:
-                            Console.Out.WriteLineAsync("Received invalid data from client " + Id);
-                            break;
-                    }
+                    Server.Singleton.HandleRequest(Stream, Id);
                 }
                 catch (IOException e)
                 {
@@ -87,8 +75,8 @@ namespace Coinche.Server
          */
         public void Clear()
         {
-            if (_thread.IsAlive)
-                _thread.Abort();
+            if (Thread.IsAlive)
+                Thread.Abort();
             Socket.Close();
         }
     }
