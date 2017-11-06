@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 using Coinche.Protobuf;
+using Coinche.Protobuf.Reader;
+using Coinche.Protobuf.Writer;
 
 namespace Coinche.Client
 {
@@ -44,6 +46,21 @@ namespace Coinche.Client
         private Thread WriteThread { get; set; }
 
         /**
+         * RequestManager
+         */
+        private ReadManager ReadManager { get; } = new ReadManager();
+        private Hashtable ReadHandlers { get; } = new Hashtable()
+        {
+            { Wrapper.Type.Message, new Coinche.Client.Protobuf.Reader.MessageHandler() }
+        };
+        
+        private WriteManager WriteManager { get; } = new WriteManager();
+        private Hashtable WriteHandlers { get; } = new Hashtable()
+        {
+            { Wrapper.Type.Message, new Coinche.Client.Protobuf.Writer.MessageHandler() }
+        };
+
+        /**
          * Serve to known if the client has been properly initialized
          */
         private bool IsInitialized { get; set; }
@@ -72,6 +89,8 @@ namespace Coinche.Client
             IsInitialized = false;
             try
             {
+                ReadManager.Initialize(ReadHandlers);
+                WriteManager.Initialize(WriteHandlers);
                 Socket.Connect(ip, port);
                 Stream = Socket.GetStream();
                 IsInitialized = true;
@@ -113,10 +132,7 @@ namespace Coinche.Client
             {
                 try
                 {
-                    var bytesFrom = new byte[1024];
-                    Stream.Read(bytesFrom, 0, 1024);
-                    var dataFromServer = Encoding.ASCII.GetString(bytesFrom);
-                    Console.Out.WriteLineAsync(dataFromServer);
+                    ReadManager.Run(Stream);
                 }
                 catch (Exception)
                 {
@@ -134,9 +150,14 @@ namespace Coinche.Client
             {
                 try
                 {
-                    var message = new Message(Console.In.ReadLine());
-                    Stream.Write(message.ProtobufTypeAsBytes, 0, 2);
-                    ProtoBuf.Serializer.SerializeWithLengthPrefix(Stream, message, ProtoBuf.PrefixStyle.Fixed32);
+                    // Read from console
+                    var input = Console.In.ReadLine();
+                    
+                    // Check commands
+                    const Wrapper.Type type = Wrapper.Type.Message;
+                    
+                    // Call WriteManager to run the command and dispatch it to the server
+                    WriteManager.Run(Stream, type, input);
                 }
                 catch (Exception)
                 {
