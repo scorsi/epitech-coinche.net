@@ -11,9 +11,6 @@ namespace Coinche.Server.Protobuf.Reader
         {
             var message = ProtoBuf.Serializer.DeserializeWithLengthPrefix<Message>(stream, ProtoBuf.PrefixStyle.Fixed32);
 
-            Console.Out.WriteLineAsync("Received message from client " + clientId + " : " + message.Text);
-            
-            Server.Singleton.Broadcast(message.Text);
             Server.Singleton.Broadcast(message.Text, true, (Client) Server.Singleton.ClientList[clientId]);
             
             return true;
