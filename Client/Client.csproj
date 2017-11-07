@@ -44,7 +44,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sources\Client.cs" />
     <Compile Include="Sources\Inputs\InputManager.cs" />
+    <Compile Include="Sources\Protobuf\Reader\Lobby\ListHandler.cs" />
     <Compile Include="Sources\Protobuf\Reader\MessageHandler.cs" />
+    <Compile Include="Sources\Protobuf\Writer\Lobby\CreateHandler.cs" />
+    <Compile Include="Sources\Protobuf\Writer\Lobby\JoinHandler.cs" />
+    <Compile Include="Sources\Protobuf\Writer\Lobby\LeaveHandler.cs" />
+    <Compile Include="Sources\Protobuf\Writer\Lobby\ListHandler.cs" />
     <Compile Include="Sources\Protobuf\Writer\MessageHandler.cs" />
   </ItemGroup>
   <ItemGroup>

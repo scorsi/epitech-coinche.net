@@ -52,7 +52,8 @@ namespace Coinche.Client
         private ReadManager ReadManager { get; } = new ReadManager();
         private Hashtable ReadHandlers { get; } = new Hashtable()
         {
-            { Wrapper.Type.Message, new Coinche.Client.Protobuf.Reader.MessageHandler() }
+            { Wrapper.Type.Message, new Protobuf.Reader.MessageHandler() },
+            { Wrapper.Type.LobbyList, new Protobuf.Reader.Lobby.ListHandler() }
         };
         
         /**
@@ -61,7 +62,11 @@ namespace Coinche.Client
         private WriteManager WriteManager { get; } = new WriteManager();
         private Hashtable WriteHandlers { get; } = new Hashtable()
         {
-            { Wrapper.Type.Message, new Coinche.Client.Protobuf.Writer.MessageHandler() }
+            { Wrapper.Type.Message, new Protobuf.Writer.MessageHandler() },
+            { Wrapper.Type.LobbyCreate, new Protobuf.Writer.Lobby.CreateHandler() },
+            { Wrapper.Type.LobbyJoin, new Protobuf.Writer.Lobby.JoinHandler() },
+            { Wrapper.Type.LobbyList, new Protobuf.Writer.Lobby.ListHandler() },
+            { Wrapper.Type.LobbyLeave, new Protobuf.Writer.Lobby.LeaveHandler() }
         };
 
         /**
@@ -70,10 +75,11 @@ namespace Coinche.Client
         private InputManager InputManager { get; } = new InputManager();
         private Hashtable InputInfos { get; } = new Hashtable()
         {
-            { new string[]{"/create", "/c"}, Wrapper.Type.Message },
-            { new string[]{"/join", "/j"}, Wrapper.Type.Message }
+            { new string[]{"/create", "/c"}, Wrapper.Type.LobbyCreate },
+            { new string[]{"/join", "/j"}, Wrapper.Type.LobbyJoin },
+            { new string[]{"/leave", "/l"}, Wrapper.Type.LobbyLeave },
+            { new string[]{"/list-lobbies", "/ll"}, Wrapper.Type.LobbyList }
         };
-        
 
         /**
          * Serve to known if the client has been properly initialized
@@ -106,6 +112,7 @@ namespace Coinche.Client
             {
                 ReadManager.Initialize(ReadHandlers);
                 WriteManager.Initialize(WriteHandlers);
+                InputManager.Initialize(InputInfos);
                 Socket.Connect(ip, port);
                 Stream = Socket.GetStream();
                 IsInitialized = true;
@@ -165,14 +172,7 @@ namespace Coinche.Client
             {
                 try
                 {
-                    // Read from console
-                    var input = Console.In.ReadLine();
-                    
-                    // Check commands
-                    const Wrapper.Type type = Wrapper.Type.Message;
-                    
-                    // Call WriteManager to run the command and dispatch it to the server
-                    WriteManager.Run(Stream, type, input);
+                    InputManager.Run(Stream, WriteManager, Console.In.ReadLine());
                 }
                 catch (Exception)
                 {

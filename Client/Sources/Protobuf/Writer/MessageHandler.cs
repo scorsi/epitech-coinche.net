@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Sockets;
+﻿using System.Net.Sockets;
 using Coinche.Protobuf;
 using Coinche.Protobuf.Writer;
 
