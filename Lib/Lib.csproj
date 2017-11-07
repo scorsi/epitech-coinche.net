@@ -42,6 +42,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sources\ClientInfo.cs" />
+    <Compile Include="Sources\LobbyInfo.cs" />
+    <Compile Include="Sources\Protobuf\LobbyCreate.cs" />
+    <Compile Include="Sources\Protobuf\LobbyJoin.cs" />
+    <Compile Include="Sources\Protobuf\LobbyLeave.cs" />
+    <Compile Include="Sources\Protobuf\LobbyList.cs" />
     <Compile Include="Sources\Protobuf\Message.cs" />
     <Compile Include="Sources\Protobuf\Reader\IReader.cs" />
     <Compile Include="Sources\Protobuf\Reader\ReadManager.cs" />

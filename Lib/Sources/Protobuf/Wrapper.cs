@@ -7,7 +7,11 @@ namespace Coinche.Protobuf
         public enum Type
         {
             Unknown = 0,
-            Message = 1
+            Message = 1,
+            LobbyCreate = 2,
+            LobbyJoin = 3,
+            LobbyLeave = 4,
+            LobbyList = 5
         };
         
         public Type ProtobufType { get; }
@@ -17,6 +21,14 @@ namespace Coinche.Protobuf
             var t = this.GetType();
             if (t == typeof(Message))
                 ProtobufType = Type.Message;
+            else if (t == typeof(LobbyCreate))
+                ProtobufType = Type.LobbyCreate;
+            else if (t == typeof(LobbyJoin))
+                ProtobufType = Type.LobbyJoin;
+            else if (t == typeof(LobbyLeave))
+                ProtobufType = Type.LobbyLeave;
+            else if (t == typeof(LobbyList))
+                ProtobufType = Type.LobbyList;
             else
             {
                 ProtobufType = Type.Unknown;
