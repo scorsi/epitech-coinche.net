@@ -3,11 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using Coinche.Protobuf;
 using Coinche.Protobuf.Reader;
 using Coinche.Protobuf.Writer;
-using Coinche.Server.Protobuf.Reader;
 
 namespace Coinche.Server
 {
@@ -33,24 +31,37 @@ namespace Coinche.Server
         private TcpListener Listener { get; set; }
 
         /**
-         * RequestManager
+         * ReadManager
          */
         private ReadManager ReadManager { get; } = new ReadManager();
         private Hashtable ReadHandlers { get; } = new Hashtable()
         {
-            { Wrapper.Type.Message, new Coinche.Server.Protobuf.Reader.MessageHandler() }
+            { Wrapper.Type.Message, new Protobuf.Reader.MessageHandler() },
+            { Wrapper.Type.LobbyCreate, new Protobuf.Reader.Lobby.CreateHandler() },
+            { Wrapper.Type.LobbyJoin, new Protobuf.Reader.Lobby.JoinHandler() },
+            { Wrapper.Type.LobbyLeave, new Protobuf.Reader.Lobby.LeaveHandler() },
+            { Wrapper.Type.LobbyList, new Protobuf.Reader.Lobby.ListHandler() }
         };
 
-        private WriteManager WriteManager { get; } = new WriteManager();
+        /**
+         * WriteManager
+         */
+        public WriteManager WriteManager { get; } = new WriteManager();
         private Hashtable WriteHandlers { get; } = new Hashtable()
         {
-            { Wrapper.Type.Message, new Coinche.Server.Protobuf.Writer.MessageHandler() }
+            { Wrapper.Type.Message, new Protobuf.Writer.MessageHandler() },
+            { Wrapper.Type.LobbyList, new Protobuf.Writer.Lobby.ListHandler() }
         };
 
         /**
          * List of connected clients
          */
         public Hashtable ClientList { get; private set; }
+        
+        /**
+         * List of lobbies
+         */
+        public List<Lobby> LobbyList { get; private set; }
 
         /**
          * Temporary list for clients to be removed
@@ -74,7 +85,9 @@ namespace Coinche.Server
                 WriteManager.Initialize(WriteHandlers);
                 
                 Listener = new TcpListener(IPAddress.Any, port);
+                
                 ClientList = new Hashtable();
+                LobbyList = new List<Lobby>();
 
                 Listener.Start();
                 IsInitialized = true;
@@ -120,8 +133,8 @@ namespace Coinche.Server
             foreach (var client in PendingDisconnection)
             {
                 client.Clear();
-                Console.Out.WriteLineAsync("Client " + client.Id + " has disconnected.");
-                ClientList.Remove(client.Id);
+                Console.Out.WriteLineAsync("Client " + client.Info.Id + " has disconnected.");
+                ClientList.Remove(client.Info.Id);
             }
             PendingDisconnection.Clear();
         }
@@ -136,7 +149,7 @@ namespace Coinche.Server
             {
                 var client = (Client) item.Value;
                 client.Clear();
-                Console.Out.WriteLineAsync("Client " + client.Id + " has disconnected.");
+                Console.Out.WriteLineAsync("Client " + client.Info.Id + " has disconnected.");
             }
             ClientList.Clear();
             Listener.Stop();
@@ -179,7 +192,7 @@ namespace Coinche.Server
 
                 WriteManager.Run(broadcastStream, Wrapper.Type.Message, 
                     (flag) 
-                        ? (client.Username + " says : " + msg)
+                        ? (client.Info.Name + " says : " + msg)
                         : (msg));
             }
             

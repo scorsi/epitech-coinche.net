@@ -3,25 +3,24 @@ using System.IO;
 using System.Net.Sockets;
 using System.Threading;
 using Coinche.Protobuf;
+using Lib.Sources;
 
 namespace Coinche.Server
 {
     public class Client
     {
+        public ClientInfo Info { get; set; }
+        
         /**
          * Socket
          */
         public TcpClient Socket { get; }
 
+        /**
+         * Stream
+         */
         private NetworkStream Stream { get; }
         
-        /**
-         * Attribute
-         */
-        public int Id { get; }
-
-        public string Username { get; }
-
         /**
          * Thread
          */
@@ -34,8 +33,7 @@ namespace Coinche.Server
         {
             Socket = socket;
             Stream = Socket.GetStream();
-            Id = id;
-            Username = Id.ToString();
+            Info = new ClientInfo(id);
         }
 
         /**
@@ -56,9 +54,9 @@ namespace Coinche.Server
             {
                 try
                 {
-                    Server.Singleton.HandleRequest(Stream, Id);
+                    Server.Singleton.HandleRequest(Stream, Info.Id);
                 }
-                catch (IOException e)
+                catch (IOException)
                 {
                     Server.Singleton.RemoveClient(this);
                     break;
