@@ -5,6 +5,7 @@ using System.Threading;
 using Coinche.Protobuf;
 using Coinche.Protobuf.Reader;
 using Coinche.Protobuf.Writer;
+using Coinche.Client.Inputs;
 
 namespace Coinche.Client
 {
@@ -54,11 +55,25 @@ namespace Coinche.Client
             { Wrapper.Type.Message, new Coinche.Client.Protobuf.Reader.MessageHandler() }
         };
         
+        /**
+         * WriteManager
+         */
         private WriteManager WriteManager { get; } = new WriteManager();
         private Hashtable WriteHandlers { get; } = new Hashtable()
         {
             { Wrapper.Type.Message, new Coinche.Client.Protobuf.Writer.MessageHandler() }
         };
+
+        /**
+         * InputManager
+         */
+        private InputManager InputManager { get; } = new InputManager();
+        private Hashtable InputInfos { get; } = new Hashtable()
+        {
+            { new string[]{"/create", "/c"}, Wrapper.Type.Message },
+            { new string[]{"/join", "/j"}, Wrapper.Type.Message }
+        };
+        
 
         /**
          * Serve to known if the client has been properly initialized
