@@ -21,7 +21,7 @@ namespace Coinche.Server
         }
 
         private const int DefaultServerPort = 8888;
-        
+
         /**
          * Singleton
          */
@@ -40,13 +40,13 @@ namespace Coinche.Server
         {
             { Wrapper.Type.Message, new Coinche.Server.Protobuf.Reader.MessageHandler() }
         };
-        
+
         private WriteManager WriteManager { get; } = new WriteManager();
         private Hashtable WriteHandlers { get; } = new Hashtable()
         {
             { Wrapper.Type.Message, new Coinche.Server.Protobuf.Writer.MessageHandler() }
         };
-        
+
         /**
          * List of connected clients
          */
@@ -56,7 +56,7 @@ namespace Coinche.Server
          * Temporary list for clients to be removed
          */
         private List<Client> PendingDisconnection { get; } = new List<Client>();
-        
+
         /**
          * Status attributes
          */
@@ -194,6 +194,6 @@ namespace Coinche.Server
         {
             PendingDisconnection.Add(client);
         }
-        
+
     }
 }
