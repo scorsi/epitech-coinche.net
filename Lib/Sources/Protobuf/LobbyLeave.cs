@@ -8,7 +8,7 @@ namespace Coinche.Protobuf
         [ProtoMember(1)]
         public string Name { get; set; }
 
-        public LobbyLeave() => Name = "";
+        public LobbyLeave() => Name = null;
         public LobbyLeave(string name) => Name = name;
     }
 }

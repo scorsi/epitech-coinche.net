@@ -14,12 +14,10 @@ namespace Coinche.Server.Protobuf.Reader.Lobby
             {
                 foreach (var lobby in Server.Singleton.LobbyList)
                 {
-                    if (lobby.Info.Clients.Contains(((Client) Server.Singleton.ClientList[clientId]).Info))
-                    {
-                        lobby.Info.Clients.Remove(((Client)Server.Singleton.ClientList[clientId]).Info);
-                        Server.Singleton.WriteManager.Run(stream, Wrapper.Type.LobbyLeave, lobby.Info.Name);
-                        return true;
-                    }
+                    if (!lobby.Info.Clients.Contains(((Client) Server.Singleton.ClientList[clientId]).Info)) continue;
+                    lobby.RemoveClient((Client)Server.Singleton.ClientList[clientId]);
+                    Server.Singleton.WriteManager.Run(stream, Wrapper.Type.LobbyLeave, lobby.Info.Name);
+                    return true;
                 }
             }
             catch (Exception e)

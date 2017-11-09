@@ -9,7 +9,7 @@ namespace Coinche.Server.Protobuf.Writer.Lobby
         public bool Run(NetworkStream stream, string input)
         {
             var proto = new LobbyLeave();
-            proto.Name = "You succesfully left the channel " + input + ".";
+            proto.Name = input;
             stream.Write(proto.ProtobufTypeAsBytes, 0, 2);
             ProtoBuf.Serializer.SerializeWithLengthPrefix(stream, proto, ProtoBuf.PrefixStyle.Fixed32);
             return true;

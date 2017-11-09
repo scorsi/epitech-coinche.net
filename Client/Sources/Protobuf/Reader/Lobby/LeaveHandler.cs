@@ -11,7 +11,10 @@ namespace Coinche.Client.Protobuf.Reader.Lobby
         {
             var proto = ProtoBuf.Serializer.DeserializeWithLengthPrefix<LobbyLeave>(stream,
                 ProtoBuf.PrefixStyle.Fixed32);
-            Console.Out.WriteLineAsync(proto.Name);
+            if (proto.Name != null)
+                Console.Out.WriteLineAsync("You successfully left the lobby '" + proto.Name + "'.");
+            else
+                Console.Out.WriteLineAsync("You're not in a lobby.");
             return true;
         }
     }

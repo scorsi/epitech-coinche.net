@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Sockets;
 using Coinche.Protobuf;
 using Coinche.Protobuf.Reader;
@@ -12,22 +13,17 @@ namespace Coinche.Server.Protobuf.Reader.Lobby
             var proto = ProtoBuf.Serializer.DeserializeWithLengthPrefix<LobbyJoin>(stream, ProtoBuf.PrefixStyle.Fixed32);
             try
             {
-                foreach (var lobby in Server.Singleton.LobbyList)
+                if (Server.Singleton.LobbyList.Any(lobby => lobby.Info.Clients.Contains(((Client) Server.Singleton.ClientList[clientId]).Info)))
                 {
-                    if (lobby.Info.Clients.Contains(((Client) Server.Singleton.ClientList[clientId]).Info))
-                    {
-                        Server.Singleton.WriteManager.Run(stream, Wrapper.Type.LobbyJoin);
-                        return false;
-                    }
+                    Server.Singleton.WriteManager.Run(stream, Wrapper.Type.LobbyJoin);
+                    return false;
                 }
                 foreach (var lobby in Server.Singleton.LobbyList)
                 {
-                    if (lobby.Info.Name == proto.Name)
-                    {
-                        lobby.Info.Clients.Add(((Client)Server.Singleton.ClientList[clientId]).Info);
-                        Server.Singleton.WriteManager.Run(stream, Wrapper.Type.LobbyJoin, proto.Name);
-                        return true;
-                    }
+                    if (lobby.Info.Name != proto.Name) continue;
+                    lobby.AddClient((Client)Server.Singleton.ClientList[clientId]);
+                    Server.Singleton.WriteManager.Run(stream, Wrapper.Type.LobbyJoin, proto.Name);
+                    return true;
                 }
             }
             catch (Exception e)

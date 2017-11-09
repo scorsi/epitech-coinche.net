@@ -52,7 +52,8 @@ namespace Coinche.Server
             { Wrapper.Type.Message, new Protobuf.Writer.MessageHandler() },
             { Wrapper.Type.LobbyList, new Protobuf.Writer.Lobby.ListHandler() },
             { Wrapper.Type.LobbyJoin, new Protobuf.Writer.Lobby.JoinHandler() },
-            { Wrapper.Type.LobbyLeave, new Protobuf.Writer.Lobby.LeaveHandler() }
+            { Wrapper.Type.LobbyLeave, new Protobuf.Writer.Lobby.LeaveHandler() },
+            { Wrapper.Type.LobbyCreate, new Protobuf.Writer.Lobby.CreateHandler() }
         };
 
         /**

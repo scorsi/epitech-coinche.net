@@ -55,7 +55,8 @@ namespace Coinche.Client
             { Wrapper.Type.Message, new Protobuf.Reader.MessageHandler() },
             { Wrapper.Type.LobbyList, new Protobuf.Reader.Lobby.ListHandler() },
             { Wrapper.Type.LobbyJoin, new Protobuf.Reader.Lobby.JoinHandler() },
-            { Wrapper.Type.LobbyLeave, new Protobuf.Reader.Lobby.JoinHandler() }
+            { Wrapper.Type.LobbyLeave, new Protobuf.Reader.Lobby.LeaveHandler() },
+            { Wrapper.Type.LobbyCreate, new Protobuf.Reader.Lobby.CreateHandler() }
         };
         
         /**
