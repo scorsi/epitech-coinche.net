@@ -20,10 +20,10 @@ namespace Coinche.Client
             if (!client.IsInitialized) return;
             if (client.Run())
             {
-                while (client.IsAlive())
+                do
                 {
-                    // Wait
-                }
+                    Thread.Sleep(50);
+                } while (client.IsAlive());
             }
             client.Clear();
         }
