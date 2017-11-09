@@ -1,6 +1,8 @@
-﻿using System.Net.Sockets;
+﻿using System.Collections.Generic;
+using System.Net.Sockets;
 using Coinche.Protobuf;
 using Coinche.Protobuf.Writer;
+using Lib.Sources;
 
 namespace Coinche.Server.Protobuf.Writer.Lobby
 {
@@ -8,7 +10,7 @@ namespace Coinche.Server.Protobuf.Writer.Lobby
     {
         public bool Run(NetworkStream stream, string input)
         {
-            var proto = new LobbyList();
+            var proto = new LobbyList { LobbyInfos = new List<LobbyInfo>() };
             foreach (var lobby in Server.Singleton.LobbyList)
             {
                 proto.LobbyInfos.Add(lobby.Info);

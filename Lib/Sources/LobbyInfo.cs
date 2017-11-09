@@ -7,10 +7,14 @@ namespace Lib.Sources
     public class LobbyInfo
     {
         [ProtoMember(1)]
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
         [ProtoMember(2)]
         public List<ClientInfo> Clients { get; set; } = new List<ClientInfo>();
 
+        public LobbyInfo()
+        {
+        }
+        
         public LobbyInfo(string name) => Name = name;
     }
 }

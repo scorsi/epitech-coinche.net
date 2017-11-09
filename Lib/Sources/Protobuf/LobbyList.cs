@@ -8,6 +8,6 @@ namespace Coinche.Protobuf
     public class LobbyList : Wrapper
     {
         [ProtoMember(1)]
-        public List<LobbyInfo> LobbyInfos { get; set; } = new List<LobbyInfo>();
+        public List<LobbyInfo> LobbyInfos { get; set; }
     }
 }

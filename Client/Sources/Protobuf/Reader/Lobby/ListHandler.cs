@@ -9,8 +9,9 @@ namespace Coinche.Client.Protobuf.Reader.Lobby
     {
         public bool Run(NetworkStream stream, int clientId = 0)
         {
-            var proto = ProtoBuf.Serializer.DeserializeWithLengthPrefix<LobbyList>(stream, ProtoBuf.PrefixStyle.Fixed32);
-            if (proto.LobbyInfos.Count <= 0)
+            var proto = ProtoBuf.Serializer.DeserializeWithLengthPrefix<LobbyList>(stream,
+                ProtoBuf.PrefixStyle.Fixed32);
+            if (proto.LobbyInfos == null || proto.LobbyInfos.Count <= 0)
             {
                 Console.Out.WriteLineAsync("There's no available lobby.");
                 return true;
