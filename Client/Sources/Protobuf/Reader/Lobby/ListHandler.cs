@@ -19,7 +19,7 @@ namespace Coinche.Client.Protobuf.Reader.Lobby
             Console.Out.WriteLineAsync("List of lobbies:");
             foreach (var lobbyInfo in proto.LobbyInfos)
             {
-                Console.Out.WriteLineAsync(" -> " + lobbyInfo.Name);
+                Console.Out.WriteLineAsync(" -> " + lobbyInfo.Name + " (" + lobbyInfo.Clients.Count + "/4)");
             }
             return true;
         }
