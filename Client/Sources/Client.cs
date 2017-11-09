@@ -53,7 +53,9 @@ namespace Coinche.Client
         private Hashtable ReadHandlers { get; } = new Hashtable()
         {
             { Wrapper.Type.Message, new Protobuf.Reader.MessageHandler() },
-            { Wrapper.Type.LobbyList, new Protobuf.Reader.Lobby.ListHandler() }
+            { Wrapper.Type.LobbyList, new Protobuf.Reader.Lobby.ListHandler() },
+            { Wrapper.Type.LobbyJoin, new Protobuf.Reader.Lobby.JoinHandler() },
+            { Wrapper.Type.LobbyLeave, new Protobuf.Reader.Lobby.JoinHandler() }
         };
         
         /**
