@@ -2,6 +2,8 @@
 {
     public class WaitingState : AState
     {
+        public static string DefaultName { get; } = "Waiting";
+        
         public WaitingState(Lobby lobby) : base("Waiting", lobby)
         {
         }

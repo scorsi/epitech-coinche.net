@@ -10,7 +10,12 @@ namespace Coinche.Server.Protobuf.Reader
         {
             var message = ProtoBuf.Serializer.DeserializeWithLengthPrefix<Message>(stream, ProtoBuf.PrefixStyle.Fixed32);
 
-            Server.Singleton.Broadcast(message.Text, true, (Client) Server.Singleton.ClientList[clientId]);
+            var client = (Client) Server.Singleton.ClientList[clientId];
+            
+            if (client.Lobby != null)
+                client.Lobby.Broadcast(message.Text, true, client);
+            else
+                Server.Singleton.Broadcast(message.Text, true, client);
 
             return true;
         }

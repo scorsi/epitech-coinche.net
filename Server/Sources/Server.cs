@@ -180,6 +180,9 @@ namespace Coinche.Server
                 var broadcastClient = (Client) item.Value;
                 if (broadcastClient == client)
                     continue; // Stop if it is the same socket
+                
+                if (broadcastClient.Lobby != null)
+                    continue; // Stop if the client is in a Lobby
 
                 NetworkStream broadcastStream;
                 try

@@ -1,58 +1,109 @@
-﻿using Coinche.Server.Game.State;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Net.Sockets;
+using System.Runtime.CompilerServices;
+using Coinche.Protobuf;
+using Coinche.Protobuf.Writer;
+using Coinche.Server.Game.State;
 using Lib.Sources;
 
 namespace Coinche.Server
 {
     public class Lobby
     {
-        public AState State { get; private set; }
-        public LobbyInfo Info { get; set; }
+        private AState State { get; set; }
+        public LobbyInfo Info { get; private set; }
+        private List<Client> Clients { get; set; } = new List<Client>();
 
         public Lobby(LobbyInfo info)
         {
             Info = info;
             State = new WaitingState(this);
+            State.Initialize();
         }
 
         public Lobby(string name)
         {
             Info = new LobbyInfo(name);
             State = new WaitingState(this);
+            State.Initialize();
         }
 
-        public void Update()
+        private void Update()
         {
             while (true)
             {
                 if (!State.IsFinished()) return;
                 State = State.NextState();
+                State.Initialize();
             }
         }
 
         public void AddClient(Client client)
         {
+            Clients.Add(client);
             Info.Clients.Add(client.Info);
             client.Lobby = this;
             
-            // Update the Lobby
+            // Update the Lobby State
             Update();
         }
 
         public void RemoveClient(Client client)
         {
+            Clients.Remove(client);
             Info.Clients.Remove(client.Info);
             client.Lobby = null;
             
-            // Set to Default State
-            State = new WaitingState(this);
+            // Check if we have to destroy Lobby
+            if (Clients.Count == 0)
+            {
+                Server.Singleton.LobbyList.Remove(this);
+                return; // Stop
+            }
+            
+            // Set state to Waiting State if not already in
+            if (!State.Name.Equals(WaitingState.DefaultName))
+                State = new WaitingState(this);
         }
 
         public void HandleAction()
         {
             State.HandleAction();
             
-            // Update the Lobby
+            // Update the Lobby State
             Update();
+        }
+        
+        /**
+         * Broadcast to all connected clients
+         */
+        public void Broadcast(string msg, bool flag = false, Client client = null)
+        {
+            if (flag && client == null)
+                return; // Add some security for NullReferenceException
+            
+            foreach (var broadcastClient in Clients)
+            {
+                if (broadcastClient == client)
+                    continue; // Stop if it is the same socket
+
+                NetworkStream broadcastStream;
+                try
+                {
+                    broadcastStream = broadcastClient.Socket.GetStream();
+                }
+                catch (InvalidOperationException)
+                {
+                    continue;
+                }
+
+                Server.Singleton.WriteManager.Run(broadcastStream, Wrapper.Type.Message, 
+                    (flag) 
+                        ? (client.Info.Name + " says : " + msg)
+                        : (msg));
+            }
         }
     }
 }
