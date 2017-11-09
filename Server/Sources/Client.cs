@@ -9,7 +9,15 @@ namespace Coinche.Server
 {
     public class Client
     {
+        /**
+         * Basic client informations
+         */
         public ClientInfo Info { get; set; }
+        
+        /**
+         * Actual lobby
+         */
+        public Lobby Lobby { get; set; }
         
         /**
          * Socket
