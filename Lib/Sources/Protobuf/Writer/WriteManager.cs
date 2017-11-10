@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Net.Sockets;
 
 namespace Coinche.Protobuf.Writer
@@ -34,7 +35,7 @@ namespace Coinche.Protobuf.Writer
         /**
          * Initialize
          */
-        public void Initialize(Hashtable handlers)
+        public void Initialize(Dictionary<Wrapper.Type, IWriter> handlers)
         {
             if (IsInitialized)
                 return;
@@ -54,11 +55,11 @@ namespace Coinche.Protobuf.Writer
         /**
          * Add entries to Table
          */
-        private void AddEntries(Hashtable tableToAdd)
+        private void AddEntries(Dictionary<Wrapper.Type, IWriter> tableToAdd)
         {
-            foreach (DictionaryEntry entry in tableToAdd)
+            foreach (var entry in tableToAdd)
             {
-                AddEntry((Wrapper.Type) entry.Key, (IWriter) entry.Value);
+                AddEntry(entry.Key, entry.Value);
             }
         }
     }
