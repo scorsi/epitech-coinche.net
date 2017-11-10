@@ -20,7 +20,7 @@ namespace Lib.Sources.Game.Card
         public static readonly CardColor Spade = new CardColor(EColor.Spade, "Spade");
 
         private EColor Index { get; }
-        private string Name { get; }
+        public string Name { get; }
         
         private CardColor(EColor index, string name)
         {
@@ -32,6 +32,11 @@ namespace Lib.Sources.Game.Card
         public static CardColor From(EColor color)
         {
             return CardColorsMapping[color];
+        }
+
+        public static CardColor From(int id)
+        {
+            return CardColorsMapping[(EColor) id];
         }
     }
 }
