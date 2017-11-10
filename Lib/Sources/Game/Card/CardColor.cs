@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Lib.Sources.Game.Card
+namespace Lib.Game.Card
 {
     public class CardColor
     {

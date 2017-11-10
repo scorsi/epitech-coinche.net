@@ -1,16 +1,16 @@
-﻿namespace Lib.Sources
+﻿namespace Lib
 {
     public class ContractInfo
     {
         public enum EType {
+            Pass = 0,
             Spade = 1,
             Heart = 2,
             Club = 3,
             Diamond = 4,
             Coinche = 5,
-            Pass = 6,
-            AllTrump = 7,
-            NoTrump = 8
-        }        
+            AllTrump = 6,
+            NoTrump = 7
+        }
     }
 }
