@@ -46,6 +46,10 @@
     <Compile Include="Sources\Game\Card\Card.cs" />
     <Compile Include="Sources\Game\Card\CardColor.cs" />
     <Compile Include="Sources\Game\Card\CardFace.cs" />
+    <Compile Include="Sources\Game\Card\Contract.cs" />
+    <Compile Include="Sources\Game\Card\Deck.cs" />
+    <Compile Include="Sources\Game\Card\Player.cs" />
+    <Compile Include="Sources\Game\Card\Team.cs" />
     <Compile Include="Sources\LobbyInfo.cs" />
     <Compile Include="Sources\Protobuf\LobbyCreate.cs" />
     <Compile Include="Sources\Protobuf\LobbyJoin.cs" />
