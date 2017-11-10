@@ -11,14 +11,15 @@ namespace Coinche.Protobuf
             LobbyCreate = 2,
             LobbyJoin = 3,
             LobbyLeave = 4,
-            LobbyList = 5
-        };
+            LobbyList = 5,
+            LobbyTeam = 6
+        }
         
         public Type ProtobufType { get; }
         public byte[] ProtobufTypeAsBytes { get; }
-        
-        public Wrapper() {
-            var t = this.GetType();
+
+        protected Wrapper() {
+            var t = GetType();
             if (t == typeof(Message))
                 ProtobufType = Type.Message;
             else if (t == typeof(LobbyCreate))
@@ -29,6 +30,8 @@ namespace Coinche.Protobuf
                 ProtobufType = Type.LobbyLeave;
             else if (t == typeof(LobbyList))
                 ProtobufType = Type.LobbyList;
+            else if (t == typeof(LobbyTeam))
+                ProtobufType = Type.LobbyTeam;
             else
             {
                 ProtobufType = Type.Unknown;

@@ -55,6 +55,7 @@
     <Compile Include="Sources\Protobuf\LobbyJoin.cs" />
     <Compile Include="Sources\Protobuf\LobbyLeave.cs" />
     <Compile Include="Sources\Protobuf\LobbyList.cs" />
+    <Compile Include="Sources\Protobuf\LobbyTeam.cs" />
     <Compile Include="Sources\Protobuf\Message.cs" />
     <Compile Include="Sources\Protobuf\Reader\IReader.cs" />
     <Compile Include="Sources\Protobuf\Reader\ReadManager.cs" />
