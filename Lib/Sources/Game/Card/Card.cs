@@ -2,44 +2,28 @@
 {
     public class Card
     {
-        private CardFace face;
-        private CardColor color;
-
-        Card(CardFace face, CardColor color) {
-            this.face = face;
-            this.color = color;
+        public CardFace Face { get; }
+        public CardColor Color { get; }
+ 
+        public Card(CardFace face, CardColor color) {
+            Face = face;
+            Color = color;
         }
-
-        public CardFace getFace() {
-            return this.face;
+ 
+        public int GetPointAllTrump() {
+            return Face.PointAllTrump;
         }
-
-        public CardColor getColor() {
-            return this.color;
+ 
+        public int GetPointNoTrump() {
+            return Face.PointNoTrump;
         }
-
-        public string getColorName() {
-            return this.getColor().Name;
+ 
+        public int GetPointOneTrump() {
+            return Face.PointOneTrump;
         }
-
-        public string getFaceName() {
-            return this.getFace().Name;
-        }
-
-        public int getPointAllTrump() {
-            return this.getFace().PointAllTrump;
-        }
-
-        public int getPointNoTrump() {
-            return this.getFace().PointNoTrump;
-        }
-
-        public int getPointOneTrump() {
-            return this.getFace().PointOneTrump;
-        }
-
-        public int getPointIsNotTrump() {
-            return this.getFace().PointIsNotTrump;
+ 
+        public int GetPointIsNotTrump() {
+            return Face.PointIsNotTrump;
         }
     }
 }
