@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading;
 using Coinche.Protobuf;
@@ -50,38 +51,41 @@ namespace Coinche.Client
          * RequestManager
          */
         private ReadManager ReadManager { get; } = new ReadManager();
-        private Hashtable ReadHandlers { get; } = new Hashtable()
+        private Dictionary<Wrapper.Type, IReader> ReadHandlers { get; } = new Dictionary<Wrapper.Type, IReader>
         {
             { Wrapper.Type.Message, new Protobuf.Reader.MessageHandler() },
             { Wrapper.Type.LobbyList, new Protobuf.Reader.Lobby.ListHandler() },
             { Wrapper.Type.LobbyJoin, new Protobuf.Reader.Lobby.JoinHandler() },
             { Wrapper.Type.LobbyLeave, new Protobuf.Reader.Lobby.LeaveHandler() },
-            { Wrapper.Type.LobbyCreate, new Protobuf.Reader.Lobby.CreateHandler() }
+            { Wrapper.Type.LobbyCreate, new Protobuf.Reader.Lobby.CreateHandler() },
+            { Wrapper.Type.LobbyTeam, new Protobuf.Reader.Lobby.TeamHandler() }
         };
         
         /**
          * WriteManager
          */
         private WriteManager WriteManager { get; } = new WriteManager();
-        private Hashtable WriteHandlers { get; } = new Hashtable()
+        private Dictionary<Wrapper.Type, IWriter> WriteHandlers { get; } = new Dictionary<Wrapper.Type, IWriter>
         {
             { Wrapper.Type.Message, new Protobuf.Writer.MessageHandler() },
             { Wrapper.Type.LobbyCreate, new Protobuf.Writer.Lobby.CreateHandler() },
             { Wrapper.Type.LobbyJoin, new Protobuf.Writer.Lobby.JoinHandler() },
             { Wrapper.Type.LobbyList, new Protobuf.Writer.Lobby.ListHandler() },
-            { Wrapper.Type.LobbyLeave, new Protobuf.Writer.Lobby.LeaveHandler() }
+            { Wrapper.Type.LobbyLeave, new Protobuf.Writer.Lobby.LeaveHandler() },
+            { Wrapper.Type.LobbyTeam, new Protobuf.Writer.Lobby.TeamHandler() }
         };
 
         /**
          * InputManager
          */
         private InputManager InputManager { get; } = new InputManager();
-        private Hashtable InputInfos { get; } = new Hashtable()
+        private Dictionary<string[], Wrapper.Type> InputInfos { get; } = new Dictionary<string[], Wrapper.Type>
         {
             { new string[]{"/create", "/c"}, Wrapper.Type.LobbyCreate },
             { new string[]{"/join", "/j"}, Wrapper.Type.LobbyJoin },
             { new string[]{"/leave", "/l"}, Wrapper.Type.LobbyLeave },
-            { new string[]{"/list-lobbies", "/ll"}, Wrapper.Type.LobbyList }
+            { new string[]{"/list-lobbies", "/ll"}, Wrapper.Type.LobbyList },
+            { new string[]{"/team", "/t"}, Wrapper.Type.LobbyTeam }
         };
 
         /**

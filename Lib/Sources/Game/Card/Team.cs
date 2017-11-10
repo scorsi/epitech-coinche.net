@@ -36,5 +36,17 @@ namespace Lib.Game.Card
         {
             return TeamMappings[(ETeam) id];
         }
+
+        public static Team From(string name)
+        {
+            foreach (var Entry in TeamMappings)
+            {
+                if (Entry.Value.Equals(name))
+                {
+                    return Entry.Value;
+                }
+            }
+            return null;
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
@@ -54,7 +55,7 @@ namespace Coinche.Client.Inputs
         /**
          * Initialize
          */
-        public void Initialize(Hashtable infos)
+        public void Initialize(Dictionary<string[], Wrapper.Type> infos)
         {
             if (IsInitialized)
                 return;
@@ -74,11 +75,11 @@ namespace Coinche.Client.Inputs
         /**
          * Add entries to Table
          */
-        private void AddEntries(Hashtable tableToAdd)
+        private void AddEntries(Dictionary<string[], Wrapper.Type> tableToAdd)
         {
-            foreach (DictionaryEntry entry in tableToAdd)
+            foreach (var entry in tableToAdd)
             {
-                AddEntry((string[]) entry.Key, (Wrapper.Type) entry.Value);
+                AddEntry(entry.Key, entry.Value);
             }
         }
     }        
