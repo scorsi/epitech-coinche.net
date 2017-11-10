@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Lib.Sources;
+using Lib;
 using ProtoBuf;
 
 namespace Coinche.Protobuf
