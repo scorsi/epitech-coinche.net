@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using Coinche.Protobuf;
 using Coinche.Server.Game.State;
-using Lib.Sources;
+using Lib;
 
 namespace Coinche.Server
 {
@@ -65,9 +65,9 @@ namespace Coinche.Server
                 State = new WaitingState(this);
         }
 
-        public void HandleAction()
+        public void HandleAction(Wrapper command, Client client)
         {
-            State.HandleAction();
+            State.HandleAction(command, client);
             
             // Update the Lobby State
             Update();

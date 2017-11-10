@@ -1,4 +1,6 @@
-﻿namespace Coinche.Server.Game.State
+﻿using Coinche.Protobuf;
+
+namespace Coinche.Server.Game.State
 {
     public class WaitingState : AState
     {
@@ -22,7 +24,7 @@
             return new ChooseTeamState(Lobby);
         }
 
-        public override void HandleAction()
+        public override void HandleAction(Wrapper command, Client client)
         {
         }
     }

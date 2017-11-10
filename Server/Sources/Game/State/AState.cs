@@ -1,4 +1,6 @@
-﻿namespace Coinche.Server.Game.State
+﻿using Coinche.Protobuf;
+
+namespace Coinche.Server.Game.State
 {
     public abstract class AState
     {
@@ -17,6 +19,6 @@
 
         public abstract AState NextState();
 
-        public abstract void HandleAction();
+        public abstract void HandleAction(Wrapper command, Client client);
     }
 }
