@@ -3,7 +3,7 @@
 namespace Coinche.Protobuf
 {
     [ProtoContract]
-    public class LobbyTeam
+    public class LobbyTeam : Wrapper
     {
         [ProtoMember(1)]
         public int Team { get; set; }
