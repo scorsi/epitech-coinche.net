@@ -34,26 +34,28 @@ namespace Coinche.Server
          * ReadManager
          */
         private ReadManager ReadManager { get; } = new ReadManager();
-        private Hashtable ReadHandlers { get; } = new Hashtable()
+        private Dictionary<Wrapper.Type, IReader> ReadHandlers { get; } = new Dictionary<Wrapper.Type, IReader>
         {
             { Wrapper.Type.Message, new Protobuf.Reader.MessageHandler() },
             { Wrapper.Type.LobbyCreate, new Protobuf.Reader.Lobby.CreateHandler() },
             { Wrapper.Type.LobbyJoin, new Protobuf.Reader.Lobby.JoinHandler() },
             { Wrapper.Type.LobbyLeave, new Protobuf.Reader.Lobby.LeaveHandler() },
-            { Wrapper.Type.LobbyList, new Protobuf.Reader.Lobby.ListHandler() }
+            { Wrapper.Type.LobbyList, new Protobuf.Reader.Lobby.ListHandler() },
+            { Wrapper.Type.LobbyTeam, new Protobuf.Reader.Lobby.TeamHandler() }
         };
 
         /**
          * WriteManager
          */
         public WriteManager WriteManager { get; } = new WriteManager();
-        private Hashtable WriteHandlers { get; } = new Hashtable()
+        private Dictionary<Wrapper.Type, IWriter> WriteHandlers { get; } = new Dictionary<Wrapper.Type, IWriter>
         {
             { Wrapper.Type.Message, new Protobuf.Writer.MessageHandler() },
             { Wrapper.Type.LobbyList, new Protobuf.Writer.Lobby.ListHandler() },
             { Wrapper.Type.LobbyJoin, new Protobuf.Writer.Lobby.JoinHandler() },
             { Wrapper.Type.LobbyLeave, new Protobuf.Writer.Lobby.LeaveHandler() },
-            { Wrapper.Type.LobbyCreate, new Protobuf.Writer.Lobby.CreateHandler() }
+            { Wrapper.Type.LobbyCreate, new Protobuf.Writer.Lobby.CreateHandler() },
+            { Wrapper.Type.LobbyTeam, new Protobuf.Writer.Lobby.TeamHandler() }
         };
 
         /**

@@ -54,11 +54,13 @@
     <Compile Include="Sources\Protobuf\Reader\Lobby\JoinHandler.cs" />
     <Compile Include="Sources\Protobuf\Reader\Lobby\LeaveHandler.cs" />
     <Compile Include="Sources\Protobuf\Reader\Lobby\ListHandler.cs" />
+    <Compile Include="Sources\Protobuf\Reader\Lobby\TeamHandler.cs" />
     <Compile Include="Sources\Protobuf\Reader\MessageHandler.cs" />
     <Compile Include="Sources\Protobuf\Writer\Lobby\CreateHandler.cs" />
     <Compile Include="Sources\Protobuf\Writer\Lobby\JoinHandler.cs" />
     <Compile Include="Sources\Protobuf\Writer\Lobby\LeaveHandler.cs" />
     <Compile Include="Sources\Protobuf\Writer\Lobby\ListHandler.cs" />
+    <Compile Include="Sources\Protobuf\Writer\Lobby\TeamHandler.cs" />
     <Compile Include="Sources\Protobuf\Writer\MessageHandler.cs" />
     <Compile Include="Sources\Server.cs" />
   </ItemGroup>
