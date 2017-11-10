@@ -1,27 +1,15 @@
 ﻿namespace Lib.Sources.Game.Card
 {
-    public class Contract {
+    public class Contract 
+    {
+        private Team Team { get; set; }
+        private ContractInfo.EType Type { get; set; }
+        private int Value { get; set; }
 
-        private Team team;
-        private Command.Contract.Type type;
-        private int value;
-
-        public Contract(Team team, Command.Contract.Type type, int value) {
-            this.team = team;
-            this.type = type;
-            this.value = value;
+        public Contract(Team team, ContractInfo.EType type, int value) {
+            Team = team;
+            Type = type;
+            Value = value;
         }
-
-        public Team getTeam() {
-            return team;
-        }
-
-        public Command.Contract.Type getType() {
-            return type;
-        }
-
-        public int getValue() {
-            return value;
-        }
-
-    }}
+    }
+}
