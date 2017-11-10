@@ -59,7 +59,7 @@ namespace Coinche.Server
         /**
          * List of connected clients
          */
-        public Hashtable ClientList { get; private set; }
+        public Dictionary<int, Client> ClientList { get; private set; }
         
         /**
          * List of lobbies
@@ -89,7 +89,7 @@ namespace Coinche.Server
                 
                 Listener = new TcpListener(IPAddress.Any, port);
                 
-                ClientList = new Hashtable();
+                ClientList = new Dictionary<int, Client>();
                 LobbyList = new List<Lobby>();
 
                 Listener.Start();
@@ -148,9 +148,9 @@ namespace Coinche.Server
         private void Clear()
         {
             PendingDisconnection.Clear();
-            foreach (DictionaryEntry item in ClientList)
+            foreach (var item in ClientList)
             {
-                var client = (Client) item.Value;
+                var client = item.Value;
                 client.Clear();
                 Console.Out.WriteLineAsync("Client " + client.Info.Id + " has disconnected.");
             }
@@ -175,9 +175,9 @@ namespace Coinche.Server
             if (flag && client == null)
                 return; // Add some security for NullReferenceException
             
-            foreach (DictionaryEntry item in ClientList)
+            foreach (var item in ClientList)
             {
-                var broadcastClient = (Client) item.Value;
+                var broadcastClient = item.Value;
                 if (broadcastClient == client)
                     continue; // Stop if it is the same socket
                 
@@ -197,9 +197,9 @@ namespace Coinche.Server
                 }
 
                 WriteManager.Run(broadcastStream, Wrapper.Type.Message, 
-                    (flag) 
-                        ? (client.Info.Name + " says : " + msg)
-                        : (msg));
+                    flag
+                        ? client.Info.Name + " says : " + msg
+                        : msg);
             }
             
             // Check disconnection after all broadcast
