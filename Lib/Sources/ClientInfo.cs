@@ -12,23 +12,29 @@ namespace Lib
         [ProtoMember(2)]
         public string Name { get; set; } = "";
 
+        private int _TeamId;
         [ProtoMember(3)]
         public int TeamId
         {
-            get => TeamId;
+            get => _TeamId;
 
             set
             {
-                TeamId = value;
-                Team = Team.From(TeamId);
+                _TeamId = value;
+                _Team = Team.From(TeamId);
             }
         }
 
+        private Team _Team;
         public Team Team
         {
-            get => Team;
-
-            set => TeamId = (int) value.Index;
+            get => _Team;
+            
+            set
+            {
+                _Team = value;
+                _TeamId = (int) value.Index;
+            }
         }
 
         public ClientInfo()
