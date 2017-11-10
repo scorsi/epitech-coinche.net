@@ -45,12 +45,36 @@ namespace Coinche.Server.Game.State
                 lastAddedPlayer = playerToAdd;
                 lobbyPlayers.Remove(playerToAdd);
             }
+
+            Lobby.Info.Clients = lobbyPlayers;
             
-            return null;
+            Lobby.Broadcast("All teams are complete.");
+            
+            return new DrawState(Lobby);
         }
 
         public override void HandleAction(Wrapper command, Client client)
         {
+            if (command.ProtobufType == Wrapper.Type.LobbyTeam)
+            {
+                HandleTeam((LobbyTeam) command, client);
+            }
+        }
+
+        private bool IsTeamFull(Client clientToNotCheck, Team teamToJoin)
+        {
+            return Lobby.Info.Clients
+                       .Where(client => client != clientToNotCheck.Info)
+                       .Count(client => client.Team == teamToJoin)
+                   >= 2;
+        }
+
+        private void HandleTeam(LobbyTeam command, Client client)
+        {
+            var teamToJoin = Team.From(command.Team);
+            if (IsTeamFull(client, teamToJoin)) return;
+            client.Info.Team = teamToJoin;
+            Lobby.Broadcast("Player " + client.Info.Name + " joined team " + teamToJoin.Name + ".");
         }
     }
 }
