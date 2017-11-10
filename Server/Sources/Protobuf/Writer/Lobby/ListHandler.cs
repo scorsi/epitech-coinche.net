@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 using Coinche.Protobuf;
 using Coinche.Protobuf.Writer;
-using Lib.Sources;
+using Lib;
 
 namespace Coinche.Server.Protobuf.Writer.Lobby
 {
