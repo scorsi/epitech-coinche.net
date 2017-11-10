@@ -1,4 +1,5 @@
-﻿using System.Net.Sockets;
+﻿using System;
+using System.Net.Sockets;
 using System.Text.RegularExpressions;
 using Coinche.Protobuf;
 using Coinche.Protobuf.Writer;
@@ -14,7 +15,7 @@ namespace Coinche.Client.Protobuf.Writer.Lobby
             if (args.Length < 2 || args[1].Length <= 0)
                 return false;
 
-            var proto = new LobbyTeam((int) Team.From(args[1]).Index);
+            var proto = new LobbyTeam((int) Team.From(args[1].ToLower()).Index);
             stream.Write(proto.ProtobufTypeAsBytes, 0, 2);
             ProtoBuf.Serializer.SerializeWithLengthPrefix(stream, proto, ProtoBuf.PrefixStyle.Fixed32);
             return true;

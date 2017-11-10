@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Lib.Game.Card
 {
@@ -13,9 +14,9 @@ namespace Lib.Game.Card
 
         private static readonly Dictionary<ETeam, Team> TeamMappings = new Dictionary<ETeam, Team>();
         
-        public static readonly Team Undefined = new Team(ETeam.Undefined, "Undefined");
-        public static readonly Team Red = new Team(ETeam.Red, "Red");
-        public static readonly Team Blue = new Team(ETeam.Blue, "Blue");        
+        public static readonly Team Undefined = new Team(ETeam.Undefined, "undefined");
+        public static readonly Team Red = new Team(ETeam.Red, "red");
+        public static readonly Team Blue = new Team(ETeam.Blue, "blue");        
 
         public ETeam Index { get; }
         public string Name { get; }
@@ -39,14 +40,7 @@ namespace Lib.Game.Card
 
         public static Team From(string name)
         {
-            foreach (var Entry in TeamMappings)
-            {
-                if (Entry.Value.Equals(name))
-                {
-                    return Entry.Value;
-                }
-            }
-            return null;
+            return (from Entry in TeamMappings where Entry.Value.Name.Equals(name) select Entry.Value).FirstOrDefault();
         }
     }
 }
