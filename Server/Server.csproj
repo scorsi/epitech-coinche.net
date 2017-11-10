@@ -45,7 +45,10 @@
     <Compile Include="Sources\Client.cs" />
     <Compile Include="Sources\Game\State\AState.cs" />
     <Compile Include="Sources\Game\State\ChooseTeamState.cs" />
+    <Compile Include="Sources\Game\State\ContractState.cs" />
+    <Compile Include="Sources\Game\State\DrawState.cs" />
     <Compile Include="Sources\Game\State\WaitingState.cs" />
+    <Compile Include="Sources\Game\State\WinningState.cs" />
     <Compile Include="Sources\Lobby.cs" />
     <Compile Include="Sources\Protobuf\Reader\Lobby\CreateHandler.cs" />
     <Compile Include="Sources\Protobuf\Reader\Lobby\JoinHandler.cs" />
