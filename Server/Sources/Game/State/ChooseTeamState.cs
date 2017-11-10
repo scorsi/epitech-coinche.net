@@ -8,22 +8,21 @@
 
         public override void Initialize()
         {
-            throw new System.NotImplementedException();
+            System.Console.Out.WriteLineAsync("ChooseTeam");
         }
 
         public override bool IsFinished()
         {
-            throw new System.NotImplementedException();
+            return false;
         }
 
         public override AState NextState()
         {
-            throw new System.NotImplementedException();
+            return null;
         }
 
         public override void HandleAction()
         {
-            throw new System.NotImplementedException();
         }
     }
 }
