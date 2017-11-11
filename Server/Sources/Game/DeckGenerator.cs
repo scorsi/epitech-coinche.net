@@ -7,14 +7,9 @@ namespace Coinche.Server.Game
 {
     public class DeckGenerator
     {
-        private Random Random { get; }
-
-        public DeckGenerator()
-        {
-            Random = new Random(Environment.TickCount);
-        }
+        private static Random Random { get; } = new Random();
         
-        public List<Deck> GenerateAllDecks() {
+        public static List<Deck> GenerateAllDecks() {
             var decks = new List<Deck>();
             
             for (var i = 0; i < 4; ++i) {
@@ -25,10 +20,10 @@ namespace Coinche.Server.Game
         
         private static bool IsCardAvailable(List<Deck> pastDecks, Deck actualDeck, Card cardToCheck)
         {
-            return pastDecks.SelectMany(deck => deck.Cards).Any(card => card == cardToCheck) || actualDeck.Cards.Any(card => card == cardToCheck);
+            return !(pastDecks.SelectMany(deck => deck.Cards).Any(card => card.Equals(cardToCheck)) || actualDeck.Cards.Any(card => card.Equals(cardToCheck)));
         }
         
-        private Deck GenerateOneDeck(List<Deck> pastDecks) {
+        private static Deck GenerateOneDeck(List<Deck> pastDecks) {
             Console.Out.WriteLine("Generate One Deck");
             
             var deck = new Deck();
@@ -36,22 +31,19 @@ namespace Coinche.Server.Game
                 Console.Out.WriteLine("Generate One Card");
 
                 Card card = null;
-                var isAvailable = true;
-                while (isAvailable) {
-                    Console.Out.WriteLine("IsAvailable");
+                var isAvailable = false;
+                while (!isAvailable) {
 
-                    try
-                    {
-                        card = new Card(
-                            CardFace.From(Random.Next(1, 8)),
-                            CardColor.From(Random.Next(1, 4)));
-                    
-                        isAvailable = IsCardAvailable(pastDecks, deck, card);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.Out.WriteLine(e.ToString());
-                    }
+                    var faceId = Random.Next(1, 8);
+                    var colorId = Random.Next(1, 4);
+                    var face = CardFace.From(faceId);
+                    var color = CardColor.From(colorId);
+
+                    Console.Out.WriteLine("IsAvailable " + faceId + " " + colorId);
+
+                    card = new Card(face, color);
+                
+                    isAvailable = IsCardAvailable(pastDecks, deck, card);
                 }
                 deck.AddCard(card);
             }
