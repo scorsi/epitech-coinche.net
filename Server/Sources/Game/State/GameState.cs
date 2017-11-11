@@ -22,8 +22,6 @@ namespace Coinche.Server.Game.State
             return null;
         }
 
-        public override void HandleAction(Wrapper command, Client client)
-        {
-        }
+        public override bool HandleAction(Wrapper command, Client client) => false;
     }
 }

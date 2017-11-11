@@ -55,12 +55,9 @@ namespace Coinche.Server.Game.State
             return new DrawState(Lobby);
         }
 
-        public override void HandleAction(Wrapper command, Client client)
+        public override bool HandleAction(Wrapper command, Client client)
         {
-            if (command.ProtobufType == Wrapper.Type.LobbyTeam)
-            {
-                HandleTeam((LobbyTeam) command, client);
-            }
+            return command.ProtobufType == Wrapper.Type.LobbyTeam && HandleTeam((LobbyTeam) command, client);
         }
 
         private bool IsTeamFull(Client clientToNotCheck, Team teamToJoin)
@@ -71,12 +68,13 @@ namespace Coinche.Server.Game.State
                    >= 2;
         }
 
-        private void HandleTeam(LobbyTeam command, Client client)
+        private bool HandleTeam(LobbyTeam command, Client client)
         {
             var teamToJoin = Team.From(command.Team);
-            if (IsTeamFull(client, teamToJoin)) return;
+            if (IsTeamFull(client, teamToJoin)) return false;
             client.Info.Team = teamToJoin;
             Lobby.Broadcast("Player " + client.Info.Name + " joined team " + teamToJoin.Name + ".", false, client);
+            return true;
         }
     }
 }

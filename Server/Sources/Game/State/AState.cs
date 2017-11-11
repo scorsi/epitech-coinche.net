@@ -19,6 +19,6 @@ namespace Coinche.Server.Game.State
 
         public abstract AState NextState();
 
-        public abstract void HandleAction(Wrapper command, Client client);
+        public abstract bool HandleAction(Wrapper command, Client client);
     }
 }

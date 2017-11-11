@@ -33,8 +33,6 @@ namespace Coinche.Server.Game.State
             return new ContractState(Lobby);
         }
 
-        public override void HandleAction(Wrapper command, Client client)
-        {
-        }
+        public override bool HandleAction(Wrapper command, Client client) => false;
     }
 }

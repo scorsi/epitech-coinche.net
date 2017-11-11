@@ -32,9 +32,11 @@ namespace Coinche.Server.Game.State
             return new DrawState(Lobby);
         }
 
-        public override void HandleAction(Wrapper command, Client client)
+        public override bool HandleAction(Wrapper command, Client client)
         {
-            ++Turn;
+            if (command.ProtobufType != Wrapper.Type.LobbyContract) return false;
+            System.Console.Out.WriteLine("Yeah");
+            return true;
         }
     }
 }

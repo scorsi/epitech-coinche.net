@@ -70,12 +70,14 @@ namespace Coinche.Server
             State = new WaitingState(this);
         }
 
-        public void HandleAction(Wrapper command, Client client)
+        public bool HandleAction(Wrapper command, Client client)
         {
-            State.HandleAction(command, client);
+            var ret = State.HandleAction(command, client);
             
             // Update the Lobby State
             Update();
+
+            return ret;
         }
         
         /**
