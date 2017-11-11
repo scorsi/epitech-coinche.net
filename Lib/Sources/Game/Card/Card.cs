@@ -2,28 +2,32 @@
 {
     public class Card
     {
-        public CardFace Face { get; }
-        public CardColor Color { get; }
- 
+        public CardInfo Info { get; set; } = new CardInfo();
+
+        public Card(CardInfo info)
+        {
+            Info = info;
+        }
+        
         public Card(CardFace face, CardColor color) {
-            Face = face;
-            Color = color;
+            Info.Face = face;
+            Info.Color = color;
         }
  
         public int GetPointAllTrump() {
-            return Face.PointAllTrump;
+            return Info.Face.PointAllTrump;
         }
  
         public int GetPointNoTrump() {
-            return Face.PointNoTrump;
+            return Info.Face.PointNoTrump;
         }
  
         public int GetPointOneTrump() {
-            return Face.PointOneTrump;
+            return Info.Face.PointOneTrump;
         }
  
         public int GetPointIsNotTrump() {
-            return Face.PointIsNotTrump;
+            return Info.Face.PointIsNotTrump;
         }
 
         public override bool Equals(object obj)
@@ -32,7 +36,7 @@
             if (typeof(object) != typeof(Card)) return false;
             
             var other = (Card) obj;
-            return Face.Index == other.Face.Index && Color.Index == other.Color.Index;
+            return Info.Face.Index == other.Info.Face.Index && Info.Color.Index == other.Info.Color.Index;
         }
     }
 }
