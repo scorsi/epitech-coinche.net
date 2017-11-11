@@ -25,5 +25,14 @@
         public int GetPointIsNotTrump() {
             return Face.PointIsNotTrump;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            if (typeof(object) != typeof(Card)) return false;
+            
+            var other = (Card) obj;
+            return Face.Index == other.Face.Index && Color.Index == other.Color.Index;
+        }
     }
 }
