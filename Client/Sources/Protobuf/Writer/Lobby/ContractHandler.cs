@@ -28,18 +28,17 @@ namespace Coinche.Client.Protobuf.Writer.Lobby
             if (!CheckFormat(args) || !CheckValue(args))
                 return false;
 
-            if (!args[1].ToLower().Equals("pass") && !args[2].ToLower().Equals("undefined"))
+            foreach (var enumType in Enum.GetValues(typeof(ContractInfo.EType)))
             {
-                foreach (var enumType in Enum.GetValues(typeof(ContractInfo.EType)))
+                if (enumType.ToString().ToLower().Equals(args[1].ToLower()))
                 {
-                    if (enumType.ToString().ToLower().Equals(args[1].ToLower()))
-                    {
-                        type = (ContractInfo.EType) enumType;
-                    }
+                    type = (ContractInfo.EType) enumType;
                 }
-                value = Convert.ToInt32(args[2]);
             }
 
+            if (!args[1].Equals("pass"))
+                value = Convert.ToInt32(args[2]);
+            
             var proto = new LobbyContract(type, value);
             stream.Write(proto.ProtobufTypeAsBytes, 0, 2);
             ProtoBuf.Serializer.SerializeWithLengthPrefix(stream, proto, ProtoBuf.PrefixStyle.Fixed32);

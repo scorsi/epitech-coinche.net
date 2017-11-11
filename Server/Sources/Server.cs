@@ -42,7 +42,8 @@ namespace Coinche.Server
             { Wrapper.Type.LobbyList, new Protobuf.Reader.Lobby.ListHandler() },
             { Wrapper.Type.LobbyTeam, new Protobuf.Reader.Lobby.TeamHandler() },
             { Wrapper.Type.LobbyCard, new Protobuf.Reader.Lobby.CardHandler() },
-            { Wrapper.Type.LobbyContract, new Protobuf.Reader.Lobby.ContractHandler() }
+            { Wrapper.Type.LobbyContract, new Protobuf.Reader.Lobby.ContractHandler() },
+            { Wrapper.Type.LobbyShowCards, new Protobuf.Reader.Lobby.ShowCardHandler() }
         };
 
         /**
@@ -58,7 +59,8 @@ namespace Coinche.Server
             { Wrapper.Type.LobbyCreate, new Protobuf.Writer.Lobby.CreateHandler() },
             { Wrapper.Type.LobbyTeam, new Protobuf.Writer.Lobby.TeamHandler() },
             { Wrapper.Type.LobbyCard, new Protobuf.Writer.Lobby.CardHandler() },
-            { Wrapper.Type.LobbyContract, new Protobuf.Writer.Lobby.ContractHandler() }
+            { Wrapper.Type.LobbyContract, new Protobuf.Writer.Lobby.ContractHandler() },
+            { Wrapper.Type.LobbyShowCards, new Protobuf.Writer.Lobby.ShowCardHandler() }
         };
 
         /**

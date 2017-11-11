@@ -1,4 +1,5 @@
-﻿using Lib.Game.Card;
+﻿using System.Collections.Generic;
+using Lib.Game.Card;
 using ProtoBuf;
 
 namespace Lib
@@ -36,6 +37,9 @@ namespace Lib
                 _TeamId = (int) value.Index;
             }
         }
+
+        [ProtoMember(4)]
+        public List<CardInfo> Deck { get; set; }
 
         public ClientInfo()
         {

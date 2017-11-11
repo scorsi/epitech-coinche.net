@@ -1,4 +1,5 @@
-﻿using Coinche.Protobuf;
+﻿using System;
+using Coinche.Protobuf;
 
 namespace Coinche.Server.Game.State
 {
@@ -22,6 +23,13 @@ namespace Coinche.Server.Game.State
             return null;
         }
 
-        public override bool HandleAction(Wrapper command, Client client) => false;
+        public override bool HandleAction(Wrapper command, Client client)
+        {
+            if (command.ProtobufType == Wrapper.Type.LobbyShowCards)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }
