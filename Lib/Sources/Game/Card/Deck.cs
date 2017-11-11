@@ -4,15 +4,14 @@ namespace Lib.Game.Card
 {
     public class Deck
     {
-
         private List<Card> Cards { get; } = new List<Card>();
 
         public int FoundCard(CardFace face, CardColor color)
         {
-            int i = 0;
+            var i = 0;
             foreach (var card in Cards)
             {
-                if (card.Face.Equals(face) && card.Color.Equals(color))
+                if (card.Info.Face.Equals(face) && card.Info.Color.Equals(color))
                 {
                     return i;
                 }
