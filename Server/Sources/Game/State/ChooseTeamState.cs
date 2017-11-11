@@ -15,6 +15,8 @@ namespace Coinche.Server.Game.State
 
         public override void Initialize()
         {
+            Lobby.Broadcast("The lobby is complete, you can now choose your teams.");
+            
             foreach (var client in Lobby.Info.Clients)
             {
                 client.Team = Team.Undefined;
@@ -37,7 +39,7 @@ namespace Coinche.Server.Game.State
             var random = new Random();
 
             while (lobbyPlayers.Count != 0) {
-                var playerToAdd = lobbyPlayers[random.Next() * 100 % lobbyPlayers.Count];
+                var playerToAdd = lobbyPlayers[random.Next(0, lobbyPlayers.Count)];
                 
                 if (players.Count != 0 && playerToAdd.Team == lastAddedPlayer.Team) continue;
                 
@@ -46,7 +48,7 @@ namespace Coinche.Server.Game.State
                 lobbyPlayers.Remove(playerToAdd);
             }
 
-            Lobby.Info.Clients = lobbyPlayers;
+            Lobby.Info.Clients = players;
             
             Lobby.Broadcast("All teams are complete.");
             
@@ -74,7 +76,7 @@ namespace Coinche.Server.Game.State
             var teamToJoin = Team.From(command.Team);
             if (IsTeamFull(client, teamToJoin)) return;
             client.Info.Team = teamToJoin;
-            Lobby.Broadcast("Player " + client.Info.Name + " joined team " + teamToJoin.Name + ".");
+            Lobby.Broadcast("Player " + client.Info.Name + " joined team " + teamToJoin.Name + ".", false, client);
         }
     }
 }
