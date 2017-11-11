@@ -3,14 +3,15 @@
     public class ContractInfo
     {
         public enum EType {
-            Spade = 1,
-            Heart = 2,
-            Club = 3,
-            Diamond = 4,
-            Coinche = 5,
-            AllTrump = 6,
-            NoTrump = 7,
-            Pass = 8
+            Undefined = 1,
+            Spade = 2,
+            Heart = 4,
+            Club = 5,
+            Diamond = 6,
+            Coinche = 7,
+            AllTrump = 8,
+            NoTrump = 9,
+            Pass = 10
         }
     }
 }
