@@ -45,6 +45,7 @@
     <Compile Include="Sources\Client.cs" />
     <Compile Include="Sources\Inputs\InputManager.cs" />
     <Compile Include="Sources\Protobuf\Reader\Lobby\CardHandler.cs" />
+    <Compile Include="Sources\Protobuf\Reader\Lobby\ContractHandler.cs" />
     <Compile Include="Sources\Protobuf\Reader\Lobby\CreateHandler.cs" />
     <Compile Include="Sources\Protobuf\Reader\Lobby\JoinHandler.cs" />
     <Compile Include="Sources\Protobuf\Reader\Lobby\LeaveHandler.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="Sources\Protobuf\Reader\Lobby\TeamHandler.cs" />
     <Compile Include="Sources\Protobuf\Reader\MessageHandler.cs" />
     <Compile Include="Sources\Protobuf\Writer\Lobby\CardHandler.cs" />
+    <Compile Include="Sources\Protobuf\Writer\Lobby\ContractHandler.cs" />
     <Compile Include="Sources\Protobuf\Writer\Lobby\CreateHandler.cs" />
     <Compile Include="Sources\Protobuf\Writer\Lobby\JoinHandler.cs" />
     <Compile Include="Sources\Protobuf\Writer\Lobby\LeaveHandler.cs" />

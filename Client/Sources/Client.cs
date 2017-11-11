@@ -87,7 +87,8 @@ namespace Coinche.Client
             { new string[]{"/leave", "/l"}, Wrapper.Type.LobbyLeave },
             { new string[]{"/list-lobbies", "/ll"}, Wrapper.Type.LobbyList },
             { new string[]{"/team", "/t"}, Wrapper.Type.LobbyTeam },
-            { new string[]{"/play-card", "/card", "/pc"}, Wrapper.Type.LobbyCard }
+            { new string[]{"/play-card", "/card", "/pc"}, Wrapper.Type.LobbyCard },
+            { new string[]{"/contract"}, Wrapper.Type.LobbyContract }
         };
 
         /**
