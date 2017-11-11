@@ -4,23 +4,33 @@ namespace Coinche.Server.Game.State
 {
     public class DrawState : AState
     {
+
+        private bool IsGenerated { get; set; } = false;
+        
         public DrawState(Lobby lobby) : base("Draw", lobby)
         {
         }
         
         public override void Initialize()
         {
-            System.Console.Out.WriteLineAsync("ChooseTeam");
+            Lobby.Broadcast("Distribution of cards.");
+            var decks = DeckGenerator.GenerateAllDecks();
+            foreach (var client in Lobby.Info.Clients)
+            {
+                // client.Deck = decks[0];
+                decks.RemoveAt(0);
+            }
+            IsGenerated = true;
         }
 
         public override bool IsFinished()
         {
-            return false;
+            return IsGenerated;
         }
 
         public override AState NextState()
         {
-            return null;
+            return new ContractState(Lobby);
         }
 
         public override void HandleAction(Wrapper command, Client client)
