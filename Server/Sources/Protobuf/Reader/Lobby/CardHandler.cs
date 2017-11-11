@@ -11,6 +11,8 @@ namespace Coinche.Server.Protobuf.Reader.Lobby
         public bool Run(NetworkStream stream, int clientId = 0)
         {
             var proto = ProtoBuf.Serializer.DeserializeWithLengthPrefix<LobbyCard>(stream, ProtoBuf.PrefixStyle.Fixed32);
+            var client = Server.Singleton.ClientList[clientId];
+            client.Lobby?.HandleAction(proto, client);
             try
             {
                 Server.Singleton.WriteManager.Run(stream, Wrapper.Type.LobbyCard, (int) proto.Info.FaceId + " " + (int) proto.Info.ColorId);
