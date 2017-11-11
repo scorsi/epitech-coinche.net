@@ -6,14 +6,14 @@ namespace Lib.Game.Card
     {
         public enum EFace
         {
-            Seven = 0,
-            Eight = 1,
-            Nine = 2,
-            Ten = 3,
-            Jack = 4,
-            Queen = 5,
-            King = 6,
-            As = 7
+            Seven = 1,
+            Eight = 2,
+            Nine = 3,
+            Ten = 4,
+            Jack = 5,
+            Queen = 6,
+            King = 7,
+            As = 8
         }
 
         private static readonly Dictionary<EFace, CardFace> CardFacesMapping = new Dictionary<EFace, CardFace>();
@@ -27,7 +27,7 @@ namespace Lib.Game.Card
         public static readonly CardFace King = new CardFace(EFace.King, "King", 3, 4, 4, 4);
         public static readonly CardFace As = new CardFace(EFace.As, "As", 7, 19, 11, 11);
         
-        private EFace Index { get; }
+        public EFace Index { get; }
         public string Name { get; }
         public int PointAllTrump { get; }
         public int PointNoTrump { get; }
@@ -55,6 +55,16 @@ namespace Lib.Game.Card
         public static CardFace From(int id)
         {
             return CardFacesMapping[(EFace) id];
+        }
+
+        public static CardFace From(string name)
+        {
+            foreach (var face in CardFacesMapping)
+            {
+                if (face.Value.Name.ToLower().Equals(name))
+                    return face.Value;
+            }
+            return null;
         }
     }
 }

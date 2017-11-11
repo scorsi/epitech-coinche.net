@@ -1,4 +1,5 @@
 ﻿using System;
+using Lib;
 
 namespace Coinche.Protobuf
 {
@@ -12,7 +13,8 @@ namespace Coinche.Protobuf
             LobbyJoin = 3,
             LobbyLeave = 4,
             LobbyList = 5,
-            LobbyTeam = 6
+            LobbyTeam = 6,
+            CardInfo = 7
         }
         
         public Type ProtobufType { get; }
@@ -32,6 +34,8 @@ namespace Coinche.Protobuf
                 ProtobufType = Type.LobbyList;
             else if (t == typeof(LobbyTeam))
                 ProtobufType = Type.LobbyTeam;
+            else if (t == typeof(CardInfo))
+                ProtobufType = Type.CardInfo;
             else
             {
                 ProtobufType = Type.Unknown;

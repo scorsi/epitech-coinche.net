@@ -7,9 +7,9 @@ namespace Lib.Game.Card
     {
         public enum ETeam
         {
-            Undefined = -1,
-            Red = 0,
-            Blue = 1
+            Undefined = 0,
+            Red = 1,
+            Blue = 2
         }
 
         private static readonly Dictionary<ETeam, Team> TeamMappings = new Dictionary<ETeam, Team>();
