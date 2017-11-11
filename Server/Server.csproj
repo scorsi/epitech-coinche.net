@@ -43,10 +43,13 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sources\Client.cs" />
+    <Compile Include="Sources\Game\Deck.cs" />
+    <Compile Include="Sources\Game\DeckGenerator.cs" />
     <Compile Include="Sources\Game\State\AState.cs" />
     <Compile Include="Sources\Game\State\ChooseTeamState.cs" />
     <Compile Include="Sources\Game\State\ContractState.cs" />
     <Compile Include="Sources\Game\State\DrawState.cs" />
+    <Compile Include="Sources\Game\State\GameState.cs" />
     <Compile Include="Sources\Game\State\WaitingState.cs" />
     <Compile Include="Sources\Game\State\WinningState.cs" />
     <Compile Include="Sources\Lobby.cs" />
