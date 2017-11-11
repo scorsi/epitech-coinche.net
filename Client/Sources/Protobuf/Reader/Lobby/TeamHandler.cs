@@ -12,7 +12,7 @@ namespace Coinche.Client.Protobuf.Reader.Lobby
         {
             var proto = ProtoBuf.Serializer.DeserializeWithLengthPrefix<LobbyTeam>(stream,
                 ProtoBuf.PrefixStyle.Fixed32);
-            if (Team.From(proto.Team).Name != null)
+            if (Team.From(proto.Team).Name != null || Team.From(proto.Team).Name != "Undefined")
                 Console.Out.WriteLineAsync("You successfully joined the " + Team.From(proto.Team).Name + " team.");
             else
                 Console.Out.WriteLineAsync("You didn't join the team because it's full or it doesn't exist.");
