@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 using Coinche.Protobuf;
 using Coinche.Protobuf.Reader;
-using Lib;
+using Lib.Game.Card;
 
 namespace Coinche.Server.Protobuf.Reader.Lobby
 {
@@ -10,15 +10,15 @@ namespace Coinche.Server.Protobuf.Reader.Lobby
     {
         public bool Run(NetworkStream stream, int clientId = 0)
         {
-            var proto = ProtoBuf.Serializer.DeserializeWithLengthPrefix<CardInfo>(stream, ProtoBuf.PrefixStyle.Fixed32);
+            var proto = ProtoBuf.Serializer.DeserializeWithLengthPrefix<LobbyCard>(stream, ProtoBuf.PrefixStyle.Fixed32);
             try
             {
-                Server.Singleton.WriteManager.Run(stream, Wrapper.Type.CardInfo, proto.Face + " " + proto.Color);
+                Server.Singleton.WriteManager.Run(stream, Wrapper.Type.LobbyCard, (int) proto.Info.FaceId + " " + (int) proto.Info.ColorId);
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Server.Singleton.WriteManager.Run(stream, Wrapper.Type.CardInfo, "-1 -1");
+                Server.Singleton.WriteManager.Run(stream, Wrapper.Type.LobbyCard, CardFace.EFace.Undefined + " " + CardColor.EColor.Undefined);
                 return false;
             }
         }        

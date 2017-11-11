@@ -8,10 +8,11 @@ namespace Lib.Game.Card
     {
         public enum EColor
         {
-            Club = 1,
-            Diamond = 2,
-            Heart = 3,
-            Spade = 4
+            Undefined = 1,
+            Club = 2,
+            Diamond = 3,
+            Heart = 4,
+            Spade = 5
         }
         
         private static readonly Dictionary<EColor, CardColor> CardColorsMapping = new Dictionary<EColor, CardColor>();
@@ -43,13 +44,7 @@ namespace Lib.Game.Card
         
         public static CardColor From(string name)
         {
-            foreach (var color in CardColorsMapping)
-            {
-                Console.Out.WriteLine(name + " vs " + color.Value.Name.ToLower());
-                if (color.Value.Name.ToLower().Equals(name))
-                    return color.Value;
-            }
-            return null;
+            return (from color in CardColorsMapping where color.Value.Name.ToLower().Equals(name) select color.Value).FirstOrDefault();
         }
         
     }

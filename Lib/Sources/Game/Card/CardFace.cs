@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Lib.Game.Card
 {
@@ -6,14 +7,15 @@ namespace Lib.Game.Card
     {
         public enum EFace
         {
-            Seven = 1,
-            Eight = 2,
-            Nine = 3,
-            Ten = 4,
-            Jack = 5,
-            Queen = 6,
-            King = 7,
-            As = 8
+            Undefined = 1,
+            Seven = 2,
+            Eight = 3,
+            Nine = 4,
+            Ten = 5,
+            Jack = 6,
+            Queen = 7,
+            King = 8,
+            As = 9
         }
 
         private static readonly Dictionary<EFace, CardFace> CardFacesMapping = new Dictionary<EFace, CardFace>();
@@ -59,12 +61,7 @@ namespace Lib.Game.Card
 
         public static CardFace From(string name)
         {
-            foreach (var face in CardFacesMapping)
-            {
-                if (face.Value.Name.ToLower().Equals(name))
-                    return face.Value;
-            }
-            return null;
+            return (from face in CardFacesMapping where face.Value.Name.ToLower().Equals(name) select face.Value).FirstOrDefault();
         }
     }
 }

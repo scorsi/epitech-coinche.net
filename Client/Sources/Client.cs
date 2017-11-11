@@ -58,7 +58,7 @@ namespace Coinche.Client
             { Wrapper.Type.LobbyLeave, new Protobuf.Reader.Lobby.LeaveHandler() },
             { Wrapper.Type.LobbyCreate, new Protobuf.Reader.Lobby.CreateHandler() },
             { Wrapper.Type.LobbyTeam, new Protobuf.Reader.Lobby.TeamHandler() },
-            { Wrapper.Type.CardInfo, new Protobuf.Reader.Lobby.CardHandler() }
+            { Wrapper.Type.LobbyCard, new Protobuf.Reader.Lobby.CardHandler() }
         };
         
         /**
@@ -73,7 +73,7 @@ namespace Coinche.Client
             { Wrapper.Type.LobbyList, new Protobuf.Writer.Lobby.ListHandler() },
             { Wrapper.Type.LobbyLeave, new Protobuf.Writer.Lobby.LeaveHandler() },
             { Wrapper.Type.LobbyTeam, new Protobuf.Writer.Lobby.TeamHandler() },
-            { Wrapper.Type.CardInfo, new Protobuf.Writer.Lobby.CardHandler() }
+            { Wrapper.Type.LobbyCard, new Protobuf.Writer.Lobby.CardHandler() }
         };
 
         /**
@@ -87,7 +87,7 @@ namespace Coinche.Client
             { new string[]{"/leave", "/l"}, Wrapper.Type.LobbyLeave },
             { new string[]{"/list-lobbies", "/ll"}, Wrapper.Type.LobbyList },
             { new string[]{"/team", "/t"}, Wrapper.Type.LobbyTeam },
-            { new string[]{"/play-card", "/pc"}, Wrapper.Type.CardInfo }
+            { new string[]{"/play-card", "/card", "/pc"}, Wrapper.Type.LobbyCard }
         };
 
         /**
