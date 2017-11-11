@@ -7,10 +7,10 @@ namespace Lib
     public class ClientInfo
     {
         [ProtoMember(1)]
-        public int Id { get; set; } = -1;
+        public int Id { get; set; }
 
         [ProtoMember(2)]
-        public string Name { get; set; } = "";
+        public string Name { get; set; }
 
         private int _TeamId;
         [ProtoMember(3)]
@@ -39,7 +39,6 @@ namespace Lib
 
         public ClientInfo()
         {
-            TeamId = (int) Team.ETeam.Undefined;
         }
         
         public ClientInfo(int id)
