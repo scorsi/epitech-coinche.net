@@ -8,7 +8,10 @@ namespace Coinche.Protobuf
         [ProtoMember(1)]
         public int Team { get; set; }
 
-        public LobbyTeam() => Team = (int) Lib.Game.Card.Team.ETeam.Undefined;
+        public LobbyTeam()
+        {
+        }
+        
         public LobbyTeam(int value) => Team = value;
     }
 }
