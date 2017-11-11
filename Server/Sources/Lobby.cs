@@ -39,6 +39,8 @@ namespace Coinche.Server
 
         public void AddClient(Client client)
         {
+            Broadcast(client.Info.Name + " joined the lobby.");
+            
             Clients.Add(client);
             Info.Clients.Add(client.Info);
             client.Lobby = this;
@@ -53,6 +55,8 @@ namespace Coinche.Server
             Info.Clients.Remove(client.Info);
             client.Lobby = null;
             
+            Broadcast(client.Info.Name + " left the lobby.");
+            
             // Check if we have to destroy Lobby
             if (Clients.Count == 0)
             {
@@ -61,8 +65,9 @@ namespace Coinche.Server
             }
             
             // Set state to Waiting State if not already in
-            if (!State.Name.Equals(WaitingState.DefaultName))
-                State = new WaitingState(this);
+            if (State.Name.Equals(WaitingState.DefaultName)) return;
+            Broadcast("The game is over, waiting for players to join.");
+            State = new WaitingState(this);
         }
 
         public void HandleAction(Wrapper command, Client client)
