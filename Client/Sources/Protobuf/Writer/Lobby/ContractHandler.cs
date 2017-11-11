@@ -28,11 +28,11 @@ namespace Coinche.Client.Protobuf.Writer.Lobby
             if (!CheckFormat(args) || !CheckValue(args))
                 return false;
 
-            if (!args[1].ToLower().Equals("pass"))
+            if (!args[1].ToLower().Equals("pass") && !args[2].ToLower().Equals("undefined"))
             {
                 foreach (var enumType in Enum.GetValues(typeof(ContractInfo.EType)))
                 {
-                    if (enumType.ToString().Equals(args[1]))
+                    if (enumType.ToString().ToLower().Equals(args[1].ToLower()))
                     {
                         type = (ContractInfo.EType) enumType;
                     }
