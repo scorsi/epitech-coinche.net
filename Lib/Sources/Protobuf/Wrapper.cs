@@ -14,7 +14,8 @@ namespace Coinche.Protobuf
             LobbyLeave = 4,
             LobbyList = 5,
             LobbyTeam = 6,
-            LobbyCard = 7
+            LobbyCard = 7,
+            LobbyContract = 8
         }
         
         public Type ProtobufType { get; }
@@ -36,6 +37,8 @@ namespace Coinche.Protobuf
                 ProtobufType = Type.LobbyTeam;
             else if (t == typeof(LobbyCard))
                 ProtobufType = Type.LobbyCard;
+            else if (t == typeof(LobbyContract))
+                ProtobufType = Type.LobbyContract;
             else
             {
                 ProtobufType = Type.Unknown;

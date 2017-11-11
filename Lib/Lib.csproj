@@ -53,6 +53,7 @@
     <Compile Include="Sources\Game\Team.cs" />
     <Compile Include="Sources\LobbyInfo.cs" />
     <Compile Include="Sources\Protobuf\LobbyCard.cs" />
+    <Compile Include="Sources\Protobuf\LobbyContract.cs" />
     <Compile Include="Sources\Protobuf\LobbyCreate.cs" />
     <Compile Include="Sources\Protobuf\LobbyJoin.cs" />
     <Compile Include="Sources\Protobuf\LobbyLeave.cs" />
