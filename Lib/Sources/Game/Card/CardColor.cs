@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Lib.Game.Card
 {
@@ -6,10 +8,10 @@ namespace Lib.Game.Card
     {
         public enum EColor
         {
-            Club = 0,
-            Diamond = 1,
-            Heart = 2,
-            Spade = 3
+            Club = 1,
+            Diamond = 2,
+            Heart = 3,
+            Spade = 4
         }
         
         private static readonly Dictionary<EColor, CardColor> CardColorsMapping = new Dictionary<EColor, CardColor>();
@@ -19,7 +21,7 @@ namespace Lib.Game.Card
         public static readonly CardColor Heart = new CardColor(EColor.Heart, "Heart");
         public static readonly CardColor Spade = new CardColor(EColor.Spade, "Spade");
 
-        private EColor Index { get; }
+        public EColor Index { get; }
         public string Name { get; }
         
         private CardColor(EColor index, string name)
@@ -38,5 +40,17 @@ namespace Lib.Game.Card
         {
             return CardColorsMapping[(EColor) id];
         }
+        
+        public static CardColor From(string name)
+        {
+            foreach (var color in CardColorsMapping)
+            {
+                Console.Out.WriteLine(name + " vs " + color.Value.Name.ToLower());
+                if (color.Value.Name.ToLower().Equals(name))
+                    return color.Value;
+            }
+            return null;
+        }
+        
     }
 }

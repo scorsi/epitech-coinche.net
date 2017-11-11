@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
@@ -41,7 +40,8 @@ namespace Coinche.Server
             { Wrapper.Type.LobbyJoin, new Protobuf.Reader.Lobby.JoinHandler() },
             { Wrapper.Type.LobbyLeave, new Protobuf.Reader.Lobby.LeaveHandler() },
             { Wrapper.Type.LobbyList, new Protobuf.Reader.Lobby.ListHandler() },
-            { Wrapper.Type.LobbyTeam, new Protobuf.Reader.Lobby.TeamHandler() }
+            { Wrapper.Type.LobbyTeam, new Protobuf.Reader.Lobby.TeamHandler() },
+            { Wrapper.Type.CardInfo, new Protobuf.Reader.Lobby.CardHandler() }
         };
 
         /**
@@ -55,7 +55,8 @@ namespace Coinche.Server
             { Wrapper.Type.LobbyJoin, new Protobuf.Writer.Lobby.JoinHandler() },
             { Wrapper.Type.LobbyLeave, new Protobuf.Writer.Lobby.LeaveHandler() },
             { Wrapper.Type.LobbyCreate, new Protobuf.Writer.Lobby.CreateHandler() },
-            { Wrapper.Type.LobbyTeam, new Protobuf.Writer.Lobby.TeamHandler() }
+            { Wrapper.Type.LobbyTeam, new Protobuf.Writer.Lobby.TeamHandler() },
+            { Wrapper.Type.CardInfo, new Protobuf.Writer.Lobby.CardHandler() }
         };
 
         /**

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading;
@@ -58,7 +57,8 @@ namespace Coinche.Client
             { Wrapper.Type.LobbyJoin, new Protobuf.Reader.Lobby.JoinHandler() },
             { Wrapper.Type.LobbyLeave, new Protobuf.Reader.Lobby.LeaveHandler() },
             { Wrapper.Type.LobbyCreate, new Protobuf.Reader.Lobby.CreateHandler() },
-            { Wrapper.Type.LobbyTeam, new Protobuf.Reader.Lobby.TeamHandler() }
+            { Wrapper.Type.LobbyTeam, new Protobuf.Reader.Lobby.TeamHandler() },
+            { Wrapper.Type.CardInfo, new Protobuf.Reader.Lobby.CardHandler() }
         };
         
         /**
@@ -72,7 +72,8 @@ namespace Coinche.Client
             { Wrapper.Type.LobbyJoin, new Protobuf.Writer.Lobby.JoinHandler() },
             { Wrapper.Type.LobbyList, new Protobuf.Writer.Lobby.ListHandler() },
             { Wrapper.Type.LobbyLeave, new Protobuf.Writer.Lobby.LeaveHandler() },
-            { Wrapper.Type.LobbyTeam, new Protobuf.Writer.Lobby.TeamHandler() }
+            { Wrapper.Type.LobbyTeam, new Protobuf.Writer.Lobby.TeamHandler() },
+            { Wrapper.Type.CardInfo, new Protobuf.Writer.Lobby.CardHandler() }
         };
 
         /**
@@ -85,7 +86,8 @@ namespace Coinche.Client
             { new string[]{"/join", "/j"}, Wrapper.Type.LobbyJoin },
             { new string[]{"/leave", "/l"}, Wrapper.Type.LobbyLeave },
             { new string[]{"/list-lobbies", "/ll"}, Wrapper.Type.LobbyList },
-            { new string[]{"/team", "/t"}, Wrapper.Type.LobbyTeam }
+            { new string[]{"/team", "/t"}, Wrapper.Type.LobbyTeam },
+            { new string[]{"/play-card", "/pc"}, Wrapper.Type.CardInfo }
         };
 
         /**
