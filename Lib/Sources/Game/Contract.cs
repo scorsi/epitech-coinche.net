@@ -2,9 +2,9 @@
 {
     public class Contract 
     {
-        private Team Team { get; set; }
-        private ContractInfo.EType Type { get; set; }
-        private int Value { get; set; }
+        public Team Team { get; set; }
+        public ContractInfo.EType Type { get; set; }
+        public int Value { get; set; }
 
         public Contract(Team team, ContractInfo.EType type, int value) {
             Team = team;
