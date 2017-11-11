@@ -10,7 +10,7 @@ namespace Coinche.Server.Protobuf.Reader.Lobby
         {
             var proto = ProtoBuf.Serializer.DeserializeWithLengthPrefix<LobbyTeam>(stream, ProtoBuf.PrefixStyle.Fixed32);
             var client = Server.Singleton.ClientList[clientId];
-            client.Lobby.HandleAction(proto, client);
+            client.Lobby?.HandleAction(proto, client);
             Server.Singleton.WriteManager.Run(stream, Wrapper.Type.LobbyTeam, client.Info.TeamId.ToString());
             return true;
         }
