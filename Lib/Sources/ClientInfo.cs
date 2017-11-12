@@ -48,7 +48,7 @@ namespace Lib
         public ClientInfo(int id)
         {
             Id = id;
-            Name = Id.ToString();
+            Name = "Player" + Id;
         }
     }
 }
