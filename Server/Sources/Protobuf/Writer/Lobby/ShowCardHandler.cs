@@ -12,10 +12,11 @@ namespace Coinche.Server.Protobuf.Writer.Lobby
         public bool Run(NetworkStream stream, string input)
         {
             var proto = new LobbyShowCards() { Cards = new List<CardInfo>() };
-            foreach (var card in Server.Singleton.ClientList[Convert.ToInt32(input)].Info.Deck)
-            {
-                proto.Cards.Add(card);
-            }
+            if (input != null)
+                foreach (var card in Server.Singleton.ClientList[Convert.ToInt32(input)].Info.Deck)
+                    proto.Cards.Add(card);
+            else
+                proto.Cards = null;
             stream.Write(proto.ProtobufTypeAsBytes, 0, 2);
             ProtoBuf.Serializer.SerializeWithLengthPrefix(stream, proto, ProtoBuf.PrefixStyle.Fixed32);
             return true;
