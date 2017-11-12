@@ -17,7 +17,7 @@ namespace Coinche.Server.Game.State
             var decks = DeckGenerator.GenerateAllDecks();
             foreach (var client in Lobby.Info.Clients)
             {
-                // client.Deck = decks[0];
+                client.Deck = decks[0];
                 decks.RemoveAt(0);
             }
             IsGenerated = true;
