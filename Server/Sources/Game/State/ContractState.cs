@@ -37,16 +37,23 @@ namespace Coinche.Server.Game.State
 
         public override bool HandleAction(Wrapper command, Client client)
         {
-            if (command.ProtobufType == Wrapper.Type.LobbyContract)
+            switch (command.ProtobufType)
             {
-                if (HandleContract((LobbyContract) command, client))
+                case Wrapper.Type.LobbyShowCards:
                 {
+                    return true;
+                }
+                case Wrapper.Type.LobbyContract:
+                {
+                    if (!HandleContract((LobbyContract) command, client)) return false;
+                    
                     ++Turn;
                     DisplayTurnMessage();
                     return true;
                 }
+                default:
+                    return false;
             }
-            return false;
         }
 
         private bool HandleContract(LobbyContract command, Client client)
