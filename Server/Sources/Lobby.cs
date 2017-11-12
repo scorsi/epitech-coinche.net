@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using Coinche.Protobuf;
 using Coinche.Server.Game.State;
 using Lib;
+using Lib.Game.Card;
 
 namespace Coinche.Server
 {
@@ -12,9 +13,11 @@ namespace Coinche.Server
         private AState State { get; set; }
         public LobbyInfo Info { get; private set; }
         private List<Client> Clients { get; set; } = new List<Client>();
+        public Dictionary<Team, int> Points { get; set; }
 
         public Lobby(LobbyInfo info)
         {
+            Points = new Dictionary<Team, int>();
             Info = info;
             State = new WaitingState(this);
             State.Initialize();
@@ -22,6 +25,7 @@ namespace Coinche.Server
 
         public Lobby(string name)
         {
+            Points = new Dictionary<Team, int>();
             Info = new LobbyInfo(name);
             State = new WaitingState(this);
             State.Initialize();
@@ -72,7 +76,15 @@ namespace Coinche.Server
 
         public bool HandleAction(Wrapper command, Client client)
         {
-            var ret = State.HandleAction(command, client);
+            var ret = false;
+            try
+            {
+                ret = State.HandleAction(command, client);
+            }
+            catch (Exception e)
+            {
+                System.Console.Out.WriteLineAsync(e.ToString());
+            }
             
             // Update the Lobby State
             Update();
