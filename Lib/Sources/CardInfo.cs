@@ -70,5 +70,21 @@ namespace Lib
             FaceId = face;
             ColorId = color;
         }
+        
+        public int GetPointAllTrump() {
+            return Face.PointAllTrump;
+        }
+ 
+        public int GetPointNoTrump() {
+            return Face.PointNoTrump;
+        }
+ 
+        public int GetPointOneTrump() {
+            return Face.PointOneTrump;
+        }
+ 
+        public int GetPointIsNotTrump() {
+            return Face.PointIsNotTrump;
+        }
     }
 }
