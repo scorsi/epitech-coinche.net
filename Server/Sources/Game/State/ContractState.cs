@@ -30,7 +30,7 @@ namespace Coinche.Server.Game.State
         public override AState NextState()
         {
             if (Contract != null)
-                return new GameState(Lobby);
+                return new GameState(Lobby, Contract);
             Lobby.Broadcast("Anyone put contract. Replay the round.");
             return new DrawState(Lobby);
         }
