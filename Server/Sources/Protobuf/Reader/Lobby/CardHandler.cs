@@ -12,17 +12,15 @@ namespace Coinche.Server.Protobuf.Reader.Lobby
         {
             var proto = ProtoBuf.Serializer.DeserializeWithLengthPrefix<LobbyCard>(stream, ProtoBuf.PrefixStyle.Fixed32);
             var client = Server.Singleton.ClientList[clientId];
-            client.Lobby?.HandleAction(proto, client);
-            try
+            if (client.Lobby?.HandleAction(proto, client) == true)
             {
-                Server.Singleton.WriteManager.Run(stream, Wrapper.Type.LobbyCard, (int) proto.Info.FaceId + " " + (int) proto.Info.ColorId);
+                Server.Singleton.WriteManager.Run(stream, Wrapper.Type.LobbyCard,
+                    (int) proto.Info.FaceId + " " + (int) proto.Info.ColorId);
                 return true;
             }
-            catch (Exception)
-            {
-                Server.Singleton.WriteManager.Run(stream, Wrapper.Type.LobbyCard, CardFace.EFace.Undefined + " " + CardColor.EColor.Undefined);
-                return false;
-            }
+            Server.Singleton.WriteManager.Run(stream, Wrapper.Type.LobbyCard,
+                CardFace.EFace.Undefined + " " + CardColor.EColor.Undefined);
+            return false;
         }        
     }
 }
