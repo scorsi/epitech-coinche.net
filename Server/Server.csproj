@@ -43,7 +43,6 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sources\Client.cs" />
-    <Compile Include="Sources\Game\Deck.cs" />
     <Compile Include="Sources\Game\DeckGenerator.cs" />
     <Compile Include="Sources\Game\State\AState.cs" />
     <Compile Include="Sources\Game\State\ChooseTeamState.cs" />

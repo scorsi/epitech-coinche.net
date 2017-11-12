@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lib;
 using Lib.Game.Card;
 
 namespace Coinche.Server.Game
@@ -9,8 +10,8 @@ namespace Coinche.Server.Game
     {
         private static Random Random { get; } = new Random();
         
-        public static List<Deck> GenerateAllDecks() {
-            var decks = new List<Deck>();
+        public static List<List<CardInfo>> GenerateAllDecks() {
+            var decks = new List<List<CardInfo>>();
 
             for (var i = 0; i < 4; ++i)
             {
@@ -19,15 +20,16 @@ namespace Coinche.Server.Game
             return decks;
         }
         
-        private static bool IsCardAvailable(List<Deck> pastDecks, Deck actualDeck, Card cardToCheck)
+        private static bool IsCardAvailable(List<List<CardInfo>> pastDecks, List<CardInfo> actualDeck, CardInfo cardToCheck)
         {
-            return !pastDecks.SelectMany(deck => deck.Cards).Any(card => card.Info.ColorId == cardToCheck.Info.ColorId && card.Info.FaceId == cardToCheck.Info.FaceId) && actualDeck.Cards.All(card => card.Info.ColorId != cardToCheck.Info.ColorId || card.Info.FaceId != cardToCheck.Info.FaceId);
+            return !pastDecks.SelectMany(deck => deck).Any(card => card.ColorId == cardToCheck.ColorId && card.FaceId == cardToCheck.FaceId) 
+                   && actualDeck.All(card => card.ColorId != cardToCheck.ColorId || card.FaceId != cardToCheck.FaceId);
         }
         
-        private static Deck GenerateOneDeck(List<Deck> pastDecks) {
-            var deck = new Deck();
+        private static List<CardInfo> GenerateOneDeck(List<List<CardInfo>> pastDecks) {
+            var deck = new List<CardInfo>();
             for (var i = 0; i < 8; ++i) {
-                Card card = null;
+                CardInfo card = null;
                 var isAvailable = false;
                 while (!isAvailable) {
 
@@ -36,11 +38,11 @@ namespace Coinche.Server.Game
                     var face = CardFace.From(faceId);
                     var color = CardColor.From(colorId);
 
-                    card = new Card(face, color);
+                    card = new CardInfo {Face = face, Color = color};
                 
                     isAvailable = IsCardAvailable(pastDecks, deck, card);
                 }
-                deck.AddCard(card);
+                deck.Add(card);
             }
             return deck;
         }
