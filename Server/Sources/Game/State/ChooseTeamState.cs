@@ -51,6 +51,9 @@ namespace Coinche.Server.Game.State
             Lobby.Info.Clients = players;
             
             Lobby.Broadcast("All teams are complete.");
+
+            Lobby.Points[Team.Blue] = 0;
+            Lobby.Points[Team.Red] = 0;
             
             return new DrawState(Lobby);
         }
